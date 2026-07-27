@@ -1,11 +1,60 @@
-<script setup></script>
-
+<script setup>
+  import Nav from '@/components/template/Nav.vue';
+  import Footer from '@/components/template/Footer.vue';
+</script>
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <div class="app-container">
+    <Nav />
+    <main>
+      <div class="content">
+        <router-view></router-view>
+      </div>
+    </main>
+
+    <Footer />
+  </div>
 </template>
 
-<style scoped></style>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: large !important;
+  }
+
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: sans-serif;
+  }
+</style>
+
+<style scoped>
+  :deep() {
+    --primary-dark: #2c3e50;
+    --accent-warm: beige;
+    --transition-speed: 0.3s;
+  }
+
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  
+
+  main {
+    flex: 1;
+    background-color: var(--accent-warm);
+  }
+
+  .content {
+    padding: 40px;
+  }
+
+  
+</style>
