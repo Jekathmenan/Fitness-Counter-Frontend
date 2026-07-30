@@ -1,15 +1,52 @@
 import { createRouter, createWebHistory } from "vue-router";
-import LoginView from "@/views/auth/LoginView.vue";
+import { useAuthStore } from '@/stores/auth';
 
 const routes = [
-    { path: '/', component: LoginView},
-    { path: '/login', component: LoginView},
-    { path: '/register', component: LoginView} 
+  { 
+    path: '/', 
+    name: 'home', 
+    component: () => import("@/views/HomeView.vue"),
+  },
+  { 
+    path: '/login', 
+    name: 'login', 
+    component: () => import("@/views/auth/LoginView.vue"),
+
+  },
+  { 
+    path: '/register', 
+    name: 'register', 
+    component: () => import("@/views/auth/RegisterView.vue"),
+  },
+  { 
+    path: '/forgot-password', 
+    name: 'forgotPassword', 
+    component: () => import("@/views/auth/ForgotPasswordView.vue"),
+  },
+  { 
+    path: '/dashboard', 
+    name: 'dashboard', 
+    component: () => import("@/views/auth/DashboardView.vue"),
+  },
 ]
 
 const router = createRouter ({
     history: createWebHistory(),
     routes
 })
+
+// Router Guard --> Alle routes ausser 
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
+  
+  const publicPages = ['home', 'login', 'register'];
+  const authRequired = !publicPages.includes(to.name);
+
+  if (authRequired && !authStore.isAuthenticated) {
+    next({ name: 'login' });
+  } else {
+    next();
+  }
+});
 
 export default router;
