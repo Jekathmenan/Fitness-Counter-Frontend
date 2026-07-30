@@ -1,4 +1,15 @@
 <script setup>
+  import { useAuthStore } from '@/stores/auth';
+  import { useRouter } from 'vue-router';
+  
+  const authStore = useAuthStore();
+  const router = useRouter();
+
+ const handleLogout = () => {
+  authStore.logout();
+  router.push( {name: 'home' });
+ };
+
 </script>
 <template>
     <nav>
@@ -7,8 +18,15 @@
         <router-link class="nav-link" to="/ueber-uns">Über uns</router-link>
       </div>
       <div class="nav-section right">
-        <router-link class="nav-link right-link" to="/login">Anmelden</router-link>
-        <router-link class="nav-link right-link" to="/register">Konto erstellen</router-link>
+        <template v-if="!authStore.isAuthenticated">
+          <router-link class="nav-link right-link" to="/login">Anmelden</router-link>
+          <router-link class="nav-link right-link" to="/register">Konto erstellen</router-link>
+        </template>
+        <template v-else>
+          <a class="nav-link right-link logout-btn" @click.prevent="handleLogout">
+            Abmelden
+          </a>
+        </template>
       </div>
     </nav>
 </template>
@@ -50,6 +68,7 @@
   .right-link:hover {
     background-color: white;
     font-weight: bold;
+    cursor: pointer;
   }
   .router-link-active {
     border-bottom: 2px solid var(--accent-warm);
