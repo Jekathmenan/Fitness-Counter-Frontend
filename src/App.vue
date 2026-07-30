@@ -30,9 +30,12 @@
     height: 100%;
     font-family: sans-serif;
   }
+
+  
 </style>
 
 <style scoped>
+  
   :deep() {
     --primary-dark: #2c3e50;
     --accent-warm: beige;
