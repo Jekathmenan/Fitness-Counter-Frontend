@@ -1,133 +1,101 @@
 <script setup>
-    import { ref } from 'vue';
-    import { useAuthStore } from '@/stores/auth';
-    import { useRouter } from 'vue-router';
+  // imports
+  import { ref } from 'vue';
+  import { useAuthStore } from '@/stores/auth';
+  import { useRouter } from 'vue-router';
 
-    const authStore = useAuthStore();
-    const router = useRouter();
+  const authStore = useAuthStore();
+  const router = useRouter();
 
-    const email = ref('');
-    const password = ref('');
-    const errorMessage = ref('');
+  const email = ref('');
+  const password = ref('');
+  const errorMessage = ref('');
+  const loading = ref(false);
 
-    const handleLogin = async () => {
-        try {
-            errorMessage.value = '';
+  // handleLogin
+  const handleLogin = async () => {
+    try {
+      //Login
+      errorMessage.value = '';
+      loading.value = true;
 
-            await authStore.login({
-                email: email.value,
-                password: password.value
-            });
+      await authStore.login({
+        email: email.value,
+        password: password.value
+      });
 
-            router.push({ name: 'dashboard' });
-
-        } catch (error) {
-            console.error(error);
-            errorMessage.value = "Login fehlgeschlagen. Bitte Daten prüfen.";
-        }
-
-        
+      // Redirect to Dashboard
+      router.push({
+        name: 'dashboard'
+      });
+    } catch (error) {
+      // Handle Errors
+      console.error(error);
+      errorMessage.value = "Login fehlgeschlagen. Bitte Daten prüfen!";
+    } finally {
+      loading.value = false;
     }
-
+  }
 </script>
 <template>
-    <div class="login-container">
-        
-        <form class="login-form" @submit.prevent="handleLogin">
-            <h2 class="title">Anmelden</h2> 
-            <div class="form-field">
-                
-                <label class="form-label" for="email">E-Mail</label>
-                <input name="email" v-model="email" type="email" placeholder="E-Mail" required />
-            </div>
-            <div class="form-field">
-                <label class="form-label" for="password">Passwort</label>
-                <input name="password" v-model="password" type="password" placeholder="Passwort" required />
-            </div>
-            <button class="login-submit" type="submit">Login</button>
-        </form>
-        <p v-if="errorMessage" class="error"> {{ errorMessage }}</p>
+  <div class="min-h-[650px] flex items-center justify-center">
+    
+    <div class="login-cards b max-w-md w-full bg-gray-800 rounded-2xl m-8 shadow-xl shadow-gray-700 p-[25px]">
+      
+      <!-- Header -->
+      <div class="text-center mt-8 mb-8">
+        <h2 class="text-3xl font-bold text-white">Willkommen</h2>
+        <p class="text-white mt-2">Bitte loggen Sie sich ein</p>
+      </div>
+
+      <!-- Form -->
+      <form @submit.prevent="handleLogin" class="space-y-6">
+        <!-- E-Mail Feld -->
+        <div>
+          <label class="block text-sm font-medium text-white mb-1">E-Mail Adresse</label>
+          <input 
+            v-model="email"
+            type="email" 
+            placeholder="name@beispiel.de"
+            class="w-full px-4 py-3 rounded-lg border border-gray-300 
+              focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white outline-none transition"
+            required
+          />
+        </div>
+
+        <!-- Passwort Feld -->
+        <div>
+          <label class="block text-sm font-medium text-white mb-1">Passwort</label>
+          <input 
+            v-model="password"
+            type="password" 
+            placeholder="••••••••"
+            class="w-full px-4 py-3 rounded-lg border border-gray-300 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+            required
+          />
+          <div class="text-right mt-2">
+            <a href="#" class="text-sm text-blue-600 hover:underline">Passwort vergessen?</a>
+          </div>
+        </div>
+
+        <!-- Login Button -->
+        <button 
+          type="submit"
+          :disabled="loading"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition duration-300 transform active:scale-95 disabled:opacity-50"
+        >
+          <span v-if="loading">Lädt...</span>
+          <span v-else>Anmelden</span>
+        </button>
+
+      </form>
+
+      <!-- Footer -->
+      <p class="text-center text-white mt-8">
+        Noch kein Konto? 
+        <a href="#" class="text-blue-600 font-bold hover:underline">Registrieren</a>
+      </p>
+
     </div>
+  </div>
 </template>
-<style lang="css" scoped>
-    .title {
-        margin-bottom: 5px;
-        font-size: 28px !important;
-    }
-
-    .login-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 50vh;
-        margin: 60px 25px;
-        
-    }
-
-    .login-form {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 70px;
-        border-radius: 25px;
-        border: 2px solid black; 
-        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        background-color: #F9F9F2; 
-    }
-
-    .form-field {
-        margin: 5px 18px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .form-label {
-        font-size: 15px !important;
-        width: 100%;
-        margin-bottom: 2px;
-    }
-
-    .form-field input {
-        font-size: 15px !important;
-        border-radius: 8px;
-        padding: 5px;
-        width: 500px;
-        text-align: center;
-        border: 1px solid #2c3e50;
-    }
-
-    .login-submit {
-        margin-top: 8px;
-        width: 500px;
-        border-radius: 25px;
-        background-color: #2c3e50;
-        padding: 5px;
-        color: white;
-        border: 1px solid white;
-    }
-
-    .login-submit:hover {
-        margin-top: 8px;
-        width: 500px;
-        border-radius: 25px;
-        background-color: beige ;
-        padding: 5px;
-        border: 1px solid #2c3e50;
-        color: #2c3e50;
-    }
-
-    .error { 
-        color: red; margin-top: 10px; 
-        width: 400px;
-        padding: 4px 120px;
-        text-align: center;
-        border-radius: 25px;
-        
-        background-color: rgb(233, 116, 116);
-    }
-
-</style>
