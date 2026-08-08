@@ -32,23 +32,23 @@
         }
         else if (!/[A-Z]/.test(passwordValue) || !/[a-z]/.test(passwordValue)) {
             errors.value.password = "Passwort muss Gross- und Kleinbuchstaben enthalten!";
-            hasError = true;
+            error = true;
         }
         else if (!/[0-9]/.test(passwordValue)) {
             errors.value.password = "Passwort muss mindestens eine Zahl enthalten!";
-            hasError = true;
+            error = true;
         }
 
         // Prüfe Vorname
         if (form.value.firstname.trim().length === 0) {
             errors.value.firstname = "Vorname ist erforderlich!";
-            hasError = true;
+            error = true;
         }
 
         // Prüfe Nachname
         if (form.value.lastname.trim().length === 0) {
             errors.value.lastname = "Nachname ist erforderlich!";
-            hasError = true;
+            error = true;
         }
 
         return error;
@@ -114,7 +114,7 @@
                         focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white outline-none transition"
                         required
                     />
-                    <span v-if="errors.firstName" class="mt-2 text-sm text-red-600">
+                    <span v-if="errors.firstname" class="mt-2 text-sm text-red-600">
                         {{ errors.firstName }}
                     </span>
                 </div>
@@ -125,7 +125,7 @@
                     class="w-full px-4 py-3 rounded-lg border border-gray-300 
                         focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white outline-none transition"    
                     placeholder="Nachname"/>
-                    <span v-if="errors.lastName" class="mt-2 text-sm text-red-600">
+                    <span v-if="errors.lastname" class="mt-2 text-sm text-red-600">
                         {{ errors.lastName }}
                     </span>
                 </div>
