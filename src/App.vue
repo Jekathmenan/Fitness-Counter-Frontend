@@ -4,8 +4,8 @@
 </script>
 <template>
   <div class="app-container">
-    <Nav />
-    <main>
+    <Nav class="bg-gray-900" />
+    <main class="bg-gray-800 text-gray-300" >
       <div class="content">
         <router-view></router-view>
       </div>
@@ -16,13 +16,6 @@
 </template>
 
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-size: large !important;
-  }
-
 
   html, body {
     margin: 0;
@@ -35,12 +28,6 @@
 </style>
 
 <style scoped>
-  
-  :deep() {
-    --primary-dark: #2c3e50;
-    --accent-warm: beige;
-    --transition-speed: 0.3s;
-  }
 
   .app-container {
     display: flex;
@@ -48,16 +35,11 @@
     min-height: 100vh;
   }
 
-  
-
   main {
     flex: 1;
-    background-color: var(--accent-warm);
   }
 
   .content {
     padding: 40px;
   }
-
-  
 </style>
