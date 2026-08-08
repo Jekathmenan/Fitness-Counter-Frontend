@@ -12,6 +12,7 @@
   const errorMessage = ref('');
   const loading = ref(false);
   const errors= ref({});
+  const showPassword = ref({});
 
   // handleLogin
   const handleLogin = async () => {
@@ -77,14 +78,22 @@
         <!-- Passwort Feld -->
         <div>
           <label class="block text-sm font-medium text-white mb-1" for="password">Passwort</label>
-          <input 
-            aria-describedby="email-error"    
-            v-model="password"
-            type="password" 
-            placeholder="••••••••"
-            class="w-full px-4 py-3 rounded-lg border border-gray-300 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-            required
-          />
+          <div class="relative">
+            <input 
+              aria-describedby="email-error"    
+              v-model="password"
+              :type="showPassword ? 'text' : 'password'" 
+              placeholder="••••••••"
+              class="w-full px-4 py-3 rounded-lg border border-gray-300 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition pr-20"
+              required
+            />
+            <button type="button" class="absolute inset-y-0 right-0 pr-4 flex items-center text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-blue-400 transition"
+              @click="showPassword = !showPassword"
+            >
+              {{ showPassword ? 'Verbergen' : 'Anzeigen' }}
+            </button>
+          </div>
+          
           <span v-if="errors.password" 
             class="mt-2 text-sm text-red-600"
           >
