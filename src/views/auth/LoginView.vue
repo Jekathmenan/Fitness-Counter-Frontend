@@ -11,6 +11,7 @@
   const password = ref('');
   const errorMessage = ref('');
   const loading = ref(false);
+  const errors= ref({});
 
   // handleLogin
   const handleLogin = async () => {
@@ -18,6 +19,7 @@
       //Login
       errorMessage.value = '';
       loading.value = true;
+      errors.value = {};
 
       await authStore.login({
         email: email.value,
@@ -30,8 +32,14 @@
       });
     } catch (error) {
       // Handle Errors
-      console.error(error);
-      errorMessage.value = "Login fehlgeschlagen. Bitte Daten prüfen!";
+      
+      if (error.response && error.response.data) {
+        errors.value = error.response.data.errors;
+      } else {
+        console.error(error);
+        errorMessage.value = "Login fehlgeschlagen.";
+      }
+      
     } finally {
       loading.value = false;
     }
@@ -40,7 +48,7 @@
 <template>
   <div class="min-h-[650px] flex items-center justify-center">
     
-    <div class="login-cards b max-w-md w-full bg-gray-800 rounded-2xl m-8 shadow-xl shadow-gray-700 p-[25px]">
+    <div class="max-w-md w-full bg-gray-800 rounded-2xl m-8 shadow-xl shadow-gray-700 p-[25px]">
       
       <!-- Header -->
       <div class="text-center mt-8 mb-8">
@@ -52,7 +60,7 @@
       <form @submit.prevent="handleLogin" class="space-y-6">
         <!-- E-Mail Feld -->
         <div>
-          <label class="block text-sm font-medium text-white mb-1">E-Mail Adresse</label>
+          <label class="block text-sm font-medium text-white mb-1" for="email">E-Mail Adresse</label>
           <input 
             v-model="email"
             type="email" 
@@ -61,18 +69,27 @@
               focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white outline-none transition"
             required
           />
+          <span v-if="errors.email" class="mt-2 text-sm text-red-600">
+            {{ errors.email }}
+          </span>
         </div>
 
         <!-- Passwort Feld -->
         <div>
-          <label class="block text-sm font-medium text-white mb-1">Passwort</label>
+          <label class="block text-sm font-medium text-white mb-1" for="password">Passwort</label>
           <input 
+            aria-describedby="email-error"    
             v-model="password"
             type="password" 
             placeholder="••••••••"
             class="w-full px-4 py-3 rounded-lg border border-gray-300 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
             required
           />
+          <span v-if="errors.password" 
+            class="mt-2 text-sm text-red-600"
+          >
+            {{ errors.password }}
+          </span>
           <div class="text-right mt-2">
             <a href="#" class="text-sm text-blue-600 hover:underline">Passwort vergessen?</a>
           </div>
