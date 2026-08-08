@@ -92,142 +92,84 @@
 
 </script>
 <template>
-    <div class="register-container">
-        <form class="register-form" @submit.prevent="handleRegister">
-            <h2 class="title">Konto erstellen</h2>
-            <div class="form-group">
-                <span class="form-label">
-                    <label for="firstname">Vorname:</label>
-                </span>
-                <input name="firstname" v-model="form.firstname" type="text" placeholder="Vorname"/>
-                <span v-if="errors.firstName" class="error-msg">
-                    {{ errors.firstName }}
-                </span>
+    <div class="min-h-[650px] flex flex-center justify-center">
+        <div class="max-w-md w-full bg-gray-800 rounded-2xl shadow-xl shadow-gray-700 p-[25px]">
+            <div class="text-center mt-4 mb-4">
+                <h2 class="text-3xl font-bold text-white">Konto erstellen</h2>
+                <p class="text-white mt-2">Erstellen sie ein neues Konto</p>
             </div>
-            <div class="form-group">
-                <span class="form-label">
+            <form 
+                class="space-y-6" 
+                @submit.prevent="handleRegister"
+            >
+                <div>
+                    <label class="block text-sm font-medium text-white mb-1" 
+                        for="firstname"
+                    >
+                        Vorname
+                    </label>
+                    <input name="firstname" 
+                        v-model="form.firstname" type="text" placeholder="Vorname"
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 
+                        focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white outline-none transition"
+                        required
+                    />
+                    <span v-if="errors.firstName" class="mt-2 text-sm text-red-600">
+                        {{ errors.firstName }}
+                    </span>
+                </div>
+                <div class="form-group">
 
-                    <label for="lastname">Nachname:</label>
-                </span>
-                <input name="lastname" v-model="form.lastname" type="text" placeholder="Nachname"/>
-                <span v-if="errors.lastName" class="error-msg">
-                    {{ errors.lastName }}
-                </span>
-            </div>
-            <div class="form-group">
-                <span class="form-label">
-                    <label for="email">E-Mail:</label>
-                </span>
-                <input name="email" v-model="form.email" type="email" placeholder="E-Mail"/>
-                <span v-if="errors.email" class="error-msg">
-                    {{ errors.email }}
-                </span>
-            </div>
-            <div class="form-group">
-                <span class="form-label">
+                    <label class="block text-sm font-medium text-white mb-1"  for="lastname">Nachname:</label>
+                    <input name="lastname" v-model="form.lastname" type="text" 
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 
+                        focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white outline-none transition"    
+                    placeholder="Nachname"/>
+                    <span v-if="errors.lastName" class="mt-2 text-sm text-red-600">
+                        {{ errors.lastName }}
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label class="block text-sm font-medium text-white mb-1" for="email">E-Mail:</label>
+                    <input name="email" v-model="form.email" 
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 
+                        focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white outline-none transition"
+                        type="email" placeholder="E-Mail"/>
+                    <span v-if="errors.email" class="mt-2 text-sm text-red-600">
+                        {{ errors.email }}
+                    </span>
+                </div>
+                <div class="form-group">
 
-                    <label for="password">Passwort:</label>
-                </span>
-                <input name="password" v-model="form.password" type="password" placeholder="Passwort"/>
-            </div>
-            <div class="form-group">
-                <span class="form-label">
-                    <label for="retypePassword">Passwort wiederholen:</label>
-                </span>
-                <input name="retypePassword" v-model="form.retypePassword" type="password" placeholder="Passwort wiederholen"/>
-                <span v-if="errors.password" class="error-msg">{{ errors.password }}</span>
-            </div>
-            <div class="form-group">
-                <button class="register-submit" type="submit">Konto erstellen</button>
-                <span v-if="errors.general" class="error-msg">{{ errors.general }}</span>
-            </div>
-        </form>
+                    <label class="block text-sm font-medium text-white mb-1" for="password">
+                        Passwort
+                    </label>
+                    <input name="password" v-model="form.password" 
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 
+                        focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white outline-none transition"
+                        type="password" placeholder="Passwort"/>
+                </div>
+                <div class="form-group">
+                    <label class="block text-sm font-medium text-white mb-1" for="retypePassword">
+                            Passwort wiederholen
+                    </label>
+                    <input name="retypePassword" v-model="form.retypePassword" 
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 
+                        focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white outline-none transition" type="password" placeholder="Passwort wiederholen"/>
+                    <span v-if="errors.password" class="mt-2 text-sm text-red-600">
+                        {{ errors.password }}
+                    </span>
+                </div>
+                <div class="form-group">
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition duration-300 transform active:scale-95 disabled:opacity-50" type="submit">
+                        Konto erstellen
+
+                    </button>
+                    <span v-if="errors.general" class="mt-2 text-sm text-red-600">
+                        {{ errors.general }}
+                    </span>
+                </div>
+            </form>
+        </div>
     </div>
 </template>
-<style lang="css" scoped>
-    .title {
-        font-size: 28px !important;
-        width: 100%;
-        margin-bottom: 5px;
-        text-align: center;
-    }
-
-    .register-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 50vh;
-        margin: 60px 25px;
-    }
-
-    .register-form {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 50px;
-        border-radius: 25px;
-        border: 2px solid black;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        background-color: #F9F9F2;
-    }
-
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin: 8px 18px;
-    }
-
-    .form-label {
-        font-size: 15px !important;
-        width: 100%;
-        margin-bottom: 2px;
-    }
-
-    .form-label label {
-        font-size: 15px !important;
-    }
-
-    .form-group input {
-        font-size: 15px !important;
-        border-radius: 8px;
-        padding: 5px;
-        width: 500px;
-        text-align: center;
-        border: 0.5px solid gray;
-    }
-
-    .register-submit {
-        margin-top: 8px;
-        width: 500px;
-        border-radius: 25px;
-        background-color: #2c3e50;
-        padding: 8px;
-        font-size: 15px !important;
-        color: white;
-        border: 1px solid white;
-    }
-
-    .register-submit:hover {
-        margin-top: 8px;
-        width: 500px;
-        border-radius: 25px;
-        background-color: beige ;
-        
-        border: 1px solid #2c3e50;
-        color: #2c3e50;
-    }
-
-    .error-msg {
-        color: white;
-        background-color: #e97474;
-        padding: 5px 15px;
-        border-radius: 20px;
-        font-size: 12px !important;
-        margin-top: 5px;
-        display: inline-block; /* Damit Padding korrekt wirkt */
-    }
-</style>
