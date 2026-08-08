@@ -12,71 +12,51 @@
 
 </script>
 <template>
-    <nav>
-      <div class="nav-section left">
-        <router-link class="nav-link" to="/">Home</router-link>
-        <router-link class="nav-link" to="/ueber-uns">Über uns</router-link>
+    <nav class="px-[40px] py-[15px] flex place-content-between items-center">
+      <div>
+        <router-link 
+          class="inline-block hover:scale-110 mr-[40px] text-white text-lg border-b-2 border-transparent transition-all" 
+          active-class="!text-white !border-white"
+          to="/"
+        >
+          Home
+        </router-link>
+        <router-link v-if="authStore.isAuthenticated" 
+          class="inline-block hover:scale-110 mr-[40px] text-white text-lg border-b-2 border-transparent transition-all" 
+          exact-active-class="!text-white !border-white"
+          to="/core-data">
+          Stammdaten
+        </router-link>
+        <router-link 
+          class="inline-block hover:scale-110 mr-[40px] text-white text-lg border-b-2 border-transparent transition-all" 
+          to="/ueber-uns"
+          exact-active-class="!text-white !border-white"
+        >
+          Über uns
+        </router-link>
       </div>
-      <div class="nav-section right">
+      <div>
         <template v-if="!authStore.isAuthenticated">
-          <router-link class="nav-link right-link" to="/login">Anmelden</router-link>
-          <router-link class="nav-link right-link" to="/register">Konto erstellen</router-link>
+          <router-link 
+            class="inline-block font-semibold text-base border-b-3 border-transparent bg-white px-4 py-1.5 rounded-full text-gray-900 mx-3 transform transition-all duration-200 hover:scale-105 hover:bg-gray-800 hover:text-white" 
+            active-class="!border-gray-300 !bg-gray-800 !text-white"
+            to="/login"
+          >
+            Anmelden
+          </router-link>
+          <router-link 
+            class="inline-block font-semibold text-base  border-b-2  border-transparent bg-white px-4 py-1.5 rounded-full hover:scale-105 text-gray-900 hover:bg-gray-800 hover:text-white mx-3" 
+            active-class="!border-gray-300 !bg-gray-800 !text-white"
+            to="/register"
+          >
+            Konto erstellen
+          </router-link>
         </template>
         <template v-else>
-          <a class="nav-link right-link logout-btn" @click.prevent="handleLogout">
+          <a class="inline-block font-semibold text-base bg-white px-4 py-1.5 rounded-full hover:scale-105 text-gray-900 hover:bg-gray-800 hover:text-white mx-3" @click.prevent="handleLogout">
             Abmelden
           </a>
         </template>
       </div>
     </nav>
 </template>
-
-<style lang="css" scoped>
-  nav {
-    padding: 15px 40px;
-    background: var(--primary-dark);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .nav-link {
-    color: white;
-    text-decoration: none;
-    display: inline-block;
-    transition: transform var(--transition-speed) ease, color var(--transition-speed);
-  }
-
-  .nav-link:hover {
-    transform: scale(1.05);
-    color: var(--accent-warm);
-  }
-
-  .left .nav-link {
-    margin-right: 30px;
-  }
-  .right-link {
-    background-color: var(--accent-warm);
-    color: var(--primary-dark);
-    border-radius: 25px;
-    padding: 8px 20px;
-    width: fit-content;
-    text-align: center;
-    margin-left: 15px;
-  }
-
-  .right-link:hover {
-    background-color: white;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  .router-link-active {
-    border-bottom: 2px solid var(--accent-warm);
-  }
-
-  .right-link.router-link-active {
-    border-bottom: none;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(255,255,255,0.3);
-  }
-</style>
