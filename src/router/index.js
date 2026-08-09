@@ -8,6 +8,16 @@ const routes = [
     component: () => import("@/views/HomeView.vue"),
   },
   { 
+    path: '/core-data', 
+    name: 'coreData', 
+    component: () => import("@/views/core_data/Overview.vue"),
+  },
+  { 
+    path: '/core-data/body-parts', 
+    name: 'coreData.bodyParts', 
+    component: () => import("@/views/core_data/BodyPartsView.vue"),
+  },
+  { 
     path: '/login', 
     name: 'login', 
     component: () => import("@/views/auth/LoginView.vue"),
