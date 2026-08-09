@@ -1,6 +1,7 @@
 <script setup>
   import Nav from '@/components/template/Nav.vue';
   import Footer from '@/components/template/Footer.vue';
+  import FlashMessage from './components/template/FlashMessage.vue';
 </script>
 <template>
   <div class="app-container">
@@ -8,9 +9,10 @@
     <main class="bg-gray-800 text-gray-300" >
       <div class="content">
         <router-view></router-view>
+
       </div>
     </main>
-
+    <FlashMessage />
     <Footer />
   </div>
 </template>

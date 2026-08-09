@@ -1,22 +1,13 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
+import { useFlashStore } from '@/stores/flash';
 
-const props = defineProps({
-  message: {
-    type: String,
-    required: true
-  },
-  status: {
-    type: String,
-    default: 'info'
-  }
-});
+const flashStore = useFlashStore();
+const isVisible = ref(false);
 
-const isVisible = ref(true);
-
-watch(() => props.message, (newVal) => {
+watch(() => flashStore.errorMessage, (newVal) => {
     if (newVal) {
-        isVisible.ref = true;
+        isVisible.value = true;
     }
 });
 
@@ -28,20 +19,33 @@ const statusConfig = {
 };
 
 const colorClasses = computed(() => {
-  return statusConfig[props.status] || statusConfig.info;
+  return statusConfig[flashStore.status] || statusConfig.info;
 });
+
+const close = () => {
+  isVisible.value = false;
+};
 </script>
 
 <template>
   <div 
-    v-if="message && isVisible"
-    @click="isVisible = false"
+    v-if="flashStore.errorMessage && isVisible"
+    @click="close"
     :class="[
-      'fixed bottom-25 right-5 z-50 px-6 py-4 rounded-xl border-l-4 shadow-2xl transition-all duration-500 flex items-center gap-3 cursor-pointer',
+      'fixed bottom-25 right-5 z-50 px-6 py-4 rounded-xl border-l-4 shadow-2xl transition-all duration-500 flex items-center gap-3 cursor-pointer select-none',
       colorClasses
     ]"
   >
-    <span class="font-medium">{{ message }}</span>
+    <span class="font-medium">{{ flashStore.errorMessage }}</span>
     <span class="text-xs opacity-50 ml-2">✕</span>
   </div>
 </template>
+<style scoped>
+  .flash-enter-active, .flash-leave-active {
+    transition: all 0.4s ease;
+  }
+  .flash-enter-from, .flash-leave-to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+</style>
