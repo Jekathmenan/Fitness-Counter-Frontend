@@ -41,7 +41,6 @@ const colorClasses = computed(() => {
       colorClasses
     ]"
   >
-    
     <span class="font-medium">{{ message }}</span>
     <span class="text-xs opacity-50 ml-2">✕</span>
   </div>

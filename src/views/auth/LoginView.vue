@@ -3,6 +3,7 @@
   import { ref } from 'vue';
   import { useAuthStore } from '@/stores/auth';
   import { useRouter } from 'vue-router';
+  import FlashMessage from '@/components/template/FlashMessage.vue';
 
   const authStore = useAuthStore();
   const router = useRouter();
@@ -12,7 +13,8 @@
   const errorMessage = ref('');
   const loading = ref(false);
   const errors= ref({});
-  const showPassword = ref({});
+  const showPassword = ref(false);
+  const flashStatus = ref('');
 
   // handleLogin
   const handleLogin = async () => {
@@ -27,6 +29,8 @@
         password: password.value
       });
 
+      // TODO: Find Users information and show Flashmessage welcoming User
+
       // Redirect to Dashboard
       router.push({
         name: 'dashboard'
@@ -38,7 +42,10 @@
         errors.value = error.response.data.errors;
       } else {
         console.error(error);
-        errorMessage.value = "Login fehlgeschlagen.";
+
+        // show FlashMessage
+        errors.value.general = "Login fehlgeschlagen. Bitte Admin kontaktieren";
+        flashStatus.value = "error";
       }
       
     } finally {
@@ -47,6 +54,7 @@
   }
 </script>
 <template>
+  <FlashMessage v-if="errors.general" :message="errors.general" :status="flashStatus" />
   <div class="min-h-[650px] flex items-center justify-center">
     
     <div class="max-w-md w-full bg-gray-800 rounded-2xl m-8 shadow-xl shadow-gray-700 p-[25px]">

@@ -2,6 +2,7 @@
     import { handleError, ref } from 'vue';
     import apiClient from '@/api/client';
     import { useRouter } from 'vue-router';
+    import FlashMessage from '@/components/template/FlashMessage.vue';
 
     const router = useRouter();
 
@@ -17,6 +18,7 @@
     const showRetypePassword = ref(false);
 
     const errors = ref({});
+    const flashStatus = ref('');
 
     const validateInputs = () =>  {
         let error = false;
@@ -74,6 +76,7 @@
                 password: form.value.password,
                 retypePassword: form.value.retypePassword
             };
+
             // register User
             const response = await apiClient.post('auth/register', requestData);
            
@@ -86,8 +89,10 @@
             if (error.response && error.response.data) {
                 errors.value = error.response.data.errors;
             } else {
+                // Show Flash message
                 console.error("Fehler beim Registrieren: ", error);
-                errors.value.general = "Registrierung fehlgeschlagen.";
+                errors.value.general = "Registrierung fehlgeschlagen. Bitte Admin kontaktieren.";
+                flashStatus.value = "error";
             }
             
         }
@@ -95,6 +100,7 @@
 
 </script>
 <template>
+    <FlashMessage v-if="errors.general" :message="errors.general" :status="flashStatus" />
     <div class="min-h-[650px] flex flex-center justify-center">
         <div class="max-w-md w-full bg-gray-800 rounded-2xl shadow-xl shadow-gray-700 p-[25px]">
             <div class="text-center mt-4 mb-4">
@@ -189,6 +195,10 @@
                     </span>
                 </div>
             </form>
+            <p class="text-center text-white mt-8">
+                Konto vorhanden?
+                <a href="#" class="text-blue-600 font-bold hover:underline">Anmelden</a>
+            </p>
         </div>
     </div>
 </template>
