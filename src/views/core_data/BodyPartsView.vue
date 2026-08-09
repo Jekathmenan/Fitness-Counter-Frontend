@@ -17,21 +17,24 @@
     };
 
     const handleDeleteConfirm = async () => {
-        console.log("Lösche eintrag:", selectedItem.value.name);
         try {
             if (selectedItem.value.unused) {
                 loading.value = true;
-                const path = 'body-part/'+ selectedItem.value.id;
-                console.log(path);
-                const response = await apiClient.delete(path);
+                const response = await apiClient.delete('body-part/'+ selectedItem.value.id);
+                
+                // Reload bodyparts
                 retrieveBodyParts();
                 flashStore.setFlash(selectedItem.value.name + ' erfolgreich gelöscht!', 'info');
             } else  {
                 flashStore.setFlash(selectedItem.value.name + ' wird bereits in Übungen verwendet und kann nicht gelöscht werden!', 'error');
             }
         } catch (error) {
+            console.error(error);
             flashStore.setFlash(selectedItem.value.name + ' konnte nicht gelöscht werden!', 'error');
+        } finally {
+            loading.value = false;
         }
+
         isDeleteModalOpen.value = false;
     };
 
@@ -114,22 +117,3 @@
 
     
 </template>
-<style scoped>
-    .body-parts {
-        margin-top: 5px;
-    }
-
-    .body-part {
-        width: 100%;
-        min-height: 25px;
-        background-color: #F9F9F2;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        
-        margin: 8px 0;
-        padding: 7px;
-    }
-
-    .body-part:hover {
-        transform: scale(1.008);
-    }
-</style>
