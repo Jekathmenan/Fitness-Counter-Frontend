@@ -1,8 +1,39 @@
 <script setup>
     import { ref, onMounted } from 'vue';
+    import apiClient from '@/api/client';
+    import { CirclePlus, Pencil, Trash2 } from 'icons';
+    import { useFlashStore } from '@/stores/flash';
+    import ConfirmModal from '@/components/template/ConfirmModal.vue';
 
     const bodyParts = ref({});
     const loading = ref(false);
+    const isDeleteModalOpen = ref(false);
+    const selectedItem = ref(null);
+    const flashStore = useFlashStore();
+
+    const openDeleteModal = (item) => {
+        selectedItem.value = item;
+        isDeleteModalOpen.value = true;
+    };
+
+    const handleDeleteConfirm = async () => {
+        console.log("Lösche eintrag:", selectedItem.value.name);
+        try {
+            if (selectedItem.value.unused) {
+                loading.value = true;
+                const path = 'body-part/'+ selectedItem.value.id;
+                console.log(path);
+                const response = await apiClient.delete(path);
+                retrieveBodyParts();
+                flashStore.setFlash(selectedItem.value.name + ' erfolgreich gelöscht!', 'info');
+            } else  {
+                flashStore.setFlash(selectedItem.value.name + ' wird bereits in Übungen verwendet und kann nicht gelöscht werden!', 'error');
+            }
+        } catch (error) {
+            flashStore.setFlash(selectedItem.value.name + ' konnte nicht gelöscht werden!', 'error');
+        }
+        isDeleteModalOpen.value = false;
+    };
 
     const retrieveBodyParts = async () => {
         try {
@@ -56,11 +87,29 @@
                     </td>
                     <td class="px-6 py-4">
                         <div class="flex justify-end space-x-2">
+                            <button class="p-2 rounded-lg bg-gray-700/50 text-blue-400 hover:bg-blue-500 hover:text-white transition-all shadow-sm" title="Bearbeiten">
+                                <Pencil class="w-4 h-4" />
+                            </button>
+                            <button  @click="openDeleteModal(bodyPart)" class="p-2 rounded-lg bg-gray-700/50 text-red-400 hover:bg-red-500 hover:text-white transition-all shadow-sm" title="Löschen">
+                                <Trash2 class="w-4 h-4" />
+                            </button>
                         </div>
                     </td>
                 </tr>
             </tbody>
         </table>
+
+        <ConfirmModal
+            :is-open="isDeleteModalOpen"
+            title="Körperteil löschen?"
+            :message="selectedItem?.unused 
+                ? 'Möchten Sie den Körperteil wirklich dauerhaut aus der Datenbank entfernen? Diese Aktion kann nicht rückgängig gemacht werden.'  
+                : 'Körperteil kann nicht gelöscht werden, da es in Übungen verwendet wird!'"
+            :item="selectedItem"
+            :allowDelete="selectedItem?.unused"
+            @close="isDeleteModalOpen = false"
+            @confirm="handleDeleteConfirm"
+        />
     </div>
 
     
