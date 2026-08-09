@@ -1,5 +1,5 @@
 <script setup>
-    import { ChevronRight } from 'lucide-vue-next';
+    import { ChevronRight } from 'icons';
     const props = defineProps({
         title: {
             type: String,

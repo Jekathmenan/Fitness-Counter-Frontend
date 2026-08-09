@@ -2,25 +2,25 @@
   // imports
   import { ref } from 'vue';
   import { useAuthStore } from '@/stores/auth';
+  import { useFlashStore } from '@/stores/flash';
   import { useRouter } from 'vue-router';
   import FlashMessage from '@/components/template/FlashMessage.vue';
+  import { Eye, EyeOff } from 'icons';
 
   const authStore = useAuthStore();
+  const flashStore = useFlashStore();
   const router = useRouter();
 
   const email = ref('');
   const password = ref('');
-  const errorMessage = ref('');
   const loading = ref(false);
   const errors= ref({});
   const showPassword = ref(false);
-  const flashStatus = ref('');
 
   // handleLogin
   const handleLogin = async () => {
     try {
       //Login
-      errorMessage.value = '';
       loading.value = true;
       errors.value = {};
 
@@ -30,22 +30,19 @@
       });
 
       // TODO: Find Users information and show Flashmessage welcoming User
-
+      flashStore.setFlash("Erfolgreich angemeldet.", "info");
       // Redirect to Dashboard
       router.push({
         name: 'dashboard'
       });
-    } catch (error) {
-      // Handle Errors
-      
+    } catch (error)
+    {      
       if (error.response && error.response.data) {
         errors.value = error.response.data.errors;
       } else {
+        // log and show FlashMessage
         console.error(error);
-
-        // show FlashMessage
-        errors.value.general = "Login fehlgeschlagen. Bitte Admin kontaktieren";
-        flashStatus.value = "error";
+        flashStore.setFlash("Login fehlgeschlagen. Bitte Admin kontaktieren", "error")
       }
       
     } finally {
@@ -54,7 +51,6 @@
   }
 </script>
 <template>
-  <FlashMessage v-if="errors.general" :message="errors.general" :status="flashStatus" />
   <div class="min-h-[650px] flex items-center justify-center">
     
     <div class="max-w-md w-full bg-gray-800 rounded-2xl m-8 shadow-xl shadow-gray-700 p-[25px]">
@@ -98,7 +94,8 @@
             <button type="button" class="absolute inset-y-0 right-0 pr-4 flex items-center text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-blue-400 transition"
               @click="showPassword = !showPassword"
             >
-              {{ showPassword ? 'Verbergen' : 'Anzeigen' }}
+              <Eye v-if="!showPassword" class="w-5 h-5" />  
+              <EyeOff v-else class="w-5 h-5" />
             </button>
           </div>
           

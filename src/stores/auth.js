@@ -20,7 +20,6 @@ export const useAuthStore = defineStore('auth', {
                 localStorage.setItem('token', token);
                 return response.data;
             } catch (error) {
-                console.error("Login-Fehler im Store: ", error);
                 throw error;
             }
         },

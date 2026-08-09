@@ -1,13 +1,16 @@
 <script setup>
   import { useAuthStore } from '@/stores/auth';
+  import { useFlashStore } from '@/stores/flash';
   import { useRouter } from 'vue-router';
   
   const authStore = useAuthStore();
+  const flashStore = useFlashStore();
   const router = useRouter();
 
  const handleLogout = () => {
   authStore.logout();
-  router.push( {name: 'home' });
+  flashStore.setFlash('Erfolgreich abgemeldet', 'info');
+  router.push( { name: 'home' });
  };
 
 </script>

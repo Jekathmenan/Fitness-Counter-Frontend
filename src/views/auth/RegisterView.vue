@@ -2,9 +2,12 @@
     import { handleError, ref } from 'vue';
     import apiClient from '@/api/client';
     import { useRouter } from 'vue-router';
+    import { useFlashStore } from '@/stores/flash';
     import FlashMessage from '@/components/template/FlashMessage.vue';
+    import { Eye, EyeOff } from 'icons';
 
     const router = useRouter();
+    const flashStore = useFlashStore();
 
     const form = ref({
         firstname: '',
@@ -82,6 +85,7 @@
            
             // Redirect User to login page if Registration successful
             if (response.status === 201) {
+                flashStore.setFlash("Konto erfolgreich erstellt.", "success");
                 router.push({ name: 'login' });
             } 
             
@@ -89,10 +93,9 @@
             if (error.response && error.response.data) {
                 errors.value = error.response.data.errors;
             } else {
-                // Show Flash message
-                console.error("Fehler beim Registrieren: ", error);
-                errors.value.general = "Registrierung fehlgeschlagen. Bitte Admin kontaktieren.";
-                flashStatus.value = "error";
+                // Log error and show Flash message
+                console.error(error);
+                flashStore.setFlash("Registrierung fehlgeschlagen. Bitte Admin kontaktieren.", "error");
             }
             
         }
@@ -100,7 +103,6 @@
 
 </script>
 <template>
-    <FlashMessage v-if="errors.general" :message="errors.general" :status="flashStatus" />
     <div class="min-h-[650px] flex flex-center justify-center">
         <div class="max-w-md w-full bg-gray-800 rounded-2xl shadow-xl shadow-gray-700 p-[25px]">
             <div class="text-center mt-4 mb-4">
@@ -129,7 +131,7 @@
                 </div>
                 <div class="form-group">
 
-                    <label class="block text-sm font-medium text-white mb-1"  for="lastname">Nachname:</label>
+                    <label class="block text-sm font-medium text-white mb-1"  for="lastname">Nachname</label>
                     <input name="lastname" v-model="form.lastname" type="text" 
                     class="w-full px-4 py-3 rounded-lg border border-gray-300 
                         focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white outline-none transition"    
@@ -139,7 +141,7 @@
                     </span>
                 </div>
                 <div class="form-group">
-                    <label class="block text-sm font-medium text-white mb-1" for="email">E-Mail:</label>
+                    <label class="block text-sm font-medium text-white mb-1" for="email">E-Mail</label>
                     <input name="email" v-model="form.email" 
                         class="w-full px-4 py-3 rounded-lg border border-gray-300 
                         focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white outline-none transition"
@@ -158,8 +160,9 @@
                             class="w-full px-4 py-3 rounded-lg border border-gray-300  bg-gray-700 text-white
                             focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition pr-20"
                             :type="showPassword ? 'text' : 'password'" placeholder="Passwort"/>
-                        <button type="submit" @click="showPassword = !showPassword" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-white transition">
-                            {{ showPassword ? 'Verbergen' : 'Anzeigen' }}
+                        <button type="submit" @click="showPassword = !showPassword" class="absolute inset-y-0 right-0 pr-4 flex items-center text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-blue-400 transition">
+                            <Eye v-if="!showPassword" class="w-5 h-5" />
+                            <EyeOff v-else class="w-5 h-5" />
                         </button>
                     </div>
                     
@@ -177,7 +180,9 @@
                         @click="showRetypePassword = !showRetypePassword"
                         class="absolute inset-y-0 right-0 pr-4 flex items-center text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-blue-400 transition"
                         >
-                        {{ showRetypePassword ? 'Verbergen' : 'Anzeigen' }}
+                        <Eye v-if="!showRetypePassword" class="w-5 h-5" />
+                        <EyeOff v-else class="w-5 h-5" />
+                        <!-- {{ showRetypePassword ? 'Verbergen' : 'Anzeigen' }} -->
                         </button>
                     </div>
                     
