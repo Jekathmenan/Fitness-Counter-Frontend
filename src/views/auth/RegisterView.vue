@@ -1,9 +1,8 @@
 <script setup>
-    import { handleError, ref } from 'vue';
+    import { ref } from 'vue';
     import apiClient from '@/api/client';
     import { useRouter } from 'vue-router';
     import { useFlashStore } from '@/stores/flash';
-    import FlashMessage from '@/components/template/FlashMessage.vue';
     import { Eye, EyeOff } from 'icons';
 
     const router = useRouter();
