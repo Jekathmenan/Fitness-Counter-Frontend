@@ -18,6 +18,11 @@ const routes = [
     component: () => import("@/views/core_data/BodyPartsView.vue"),
   },
   { 
+    path: '/core-data/body-parts/add', 
+    name: 'coreData.bodyParts.add', 
+    component: () => import("@/views/core_data/AddBodyPartsView.vue"),
+  },
+  { 
     path: '/login', 
     name: 'login', 
     component: () => import("@/views/auth/LoginView.vue"),
@@ -46,7 +51,7 @@ const router = createRouter ({
 })
 
 // Router Guard --> Alle routes ausser 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from) => {
   const authStore = useAuthStore();
   
   const publicPages = ['home', 'login', 'register'];
@@ -54,9 +59,9 @@ router.beforeEach((to, from, next) => {
 
   if (authRequired && !authStore.isAuthenticated) {
     next({ name: 'login' });
-  } else {
-    next();
-  }
+  } 
+
+  return true;
 });
 
 export default router;
