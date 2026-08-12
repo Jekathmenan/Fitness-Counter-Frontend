@@ -21,10 +21,13 @@
         try {
             if (selectedItem.value.unused) {
                 loading.value = true;
+                // Call API to delete body part
                 const response = await apiClient.delete('body-part/'+ selectedItem.value.id);
                 
                 // Reload bodyparts
                 retrieveBodyParts();
+
+                // set Flash Message
                 flashStore.setFlash(selectedItem.value.name + ' erfolgreich gelöscht!', 'info');
             } else  {
                 flashStore.setFlash(selectedItem.value.name + ' wird bereits in Übungen verwendet und kann nicht gelöscht werden!', 'error');
@@ -56,14 +59,11 @@
     })
 </script>
 <template>
-    <!--<button class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
-        <router-link class="flex" to="/core-data/body-parts/add"><span class="mr-2">Hinzufügen </span><CirclePlus class="w-5 h-5" /></router-link>
-      </button>-->
+    <Header title="Körperteile" 
+        path="/core-data"  addText="Hinzuf&uuml;gen"
+        urlText="Zur&uuml;ck zu Stammdaten" 
+    />
 
-  <Header title="Körperteile" 
-    path="/core-data"  addText="Hinzuf&uuml;gen"
-    urlText="Zur&uuml;ck zu Stammdaten" 
-  />
     <div class="relative overflow-x-auto shadow-2xl rounded-xl border border-gray-700/50 bg-gray-800/50">
         <table class="w-full text-sm text-left text-gray-300">
             <!-- Header -->
@@ -79,7 +79,6 @@
             </thead>
             
             <tbody class="divide-y divide-gray-700/50">
-                <!-- Zeile 1 -->
                 <tr v-for="bodyPart in bodyParts" class="hover:bg-gray-700/30 transition-all duration-200 group">
                     <td class="px-6 py-4 text-gray-500 font-mono text-xs">
                        #{{ bodyPart.id }}
@@ -116,6 +115,4 @@
             @confirm="handleDeleteConfirm"
         />
     </div>
-
-    
 </template>
