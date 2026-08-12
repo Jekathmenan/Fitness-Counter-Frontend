@@ -1,9 +1,10 @@
 <script setup>
     import { ref, onMounted } from 'vue';
     import apiClient from '@/api/client';
-    import { CirclePlus, Pencil, Trash2 } from 'icons';
+    import {  Pencil, Trash2 } from 'icons';
     import { useFlashStore } from '@/stores/flash';
     import ConfirmModal from '@/components/template/ConfirmModal.vue';
+    import Header from '@/components/template/Header.vue';
 
     const bodyParts = ref({});
     const loading = ref(false);
@@ -33,9 +34,8 @@
             flashStore.setFlash(selectedItem.value.name + ' konnte nicht gelöscht werden!', 'error');
         } finally {
             loading.value = false;
-        }
-
-        isDeleteModalOpen.value = false;
+            isDeleteModalOpen.value = false;
+        } 
     };
 
     const retrieveBodyParts = async () => {
@@ -49,7 +49,6 @@
         } finally {
             loading.value = false;
         }
-        
     };
 
     onMounted (() => {
@@ -57,13 +56,14 @@
     })
 </script>
 <template>
-    <div class="header flex place-content-between mb-3">
-        <h2 class="text-xl font-bold mb-[8px]">Körperteile</h2>
-        <button class="p-2 rounded-lg h-9 w-9 bg-gray-700/50 text-green-400 hover:bg-green-500 hover:text-white transition-all shadow-sm ">
-            <router-link to="/" ><CirclePlus class="w-5 h-5" /></router-link>
-        </button>
-    </div>
+    <!--<button class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
+        <router-link class="flex" to="/core-data/body-parts/add"><span class="mr-2">Hinzufügen </span><CirclePlus class="w-5 h-5" /></router-link>
+      </button>-->
 
+  <Header title="Körperteile" 
+    path="/core-data"  addText="Hinzuf&uuml;gen"
+    urlText="Zur&uuml;ck zu Stammdaten" 
+  />
     <div class="relative overflow-x-auto shadow-2xl rounded-xl border border-gray-700/50 bg-gray-800/50">
         <table class="w-full text-sm text-left text-gray-300">
             <!-- Header -->
@@ -72,7 +72,9 @@
                     <th scope="col" class="px-6 py-4 font-semibold">ID</th>
                     <th scope="col" class="px-6 py-4 font-semibold">Name</th>
                     <th scope="col" class="px-6 py-4 font-semibold">Beschreibung</th>
-                    <th scope="col" class="px-6 py-4 font-semibold text-right">Aktionen</th>
+                    <th scope="col" class="px-6 py-4 font-semibold text-right">
+                        Aktionen
+                    </th>
                 </tr>
             </thead>
             
