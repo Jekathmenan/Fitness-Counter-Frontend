@@ -17,7 +17,7 @@
 <template>
     <nav class="px-[40px] py-[15px] flex place-content-between items-center">
       <div>
-        <router-link 
+        <router-link v-if="!authStore.isAuthenticated" 
           class="inline-block hover:scale-110 mr-[40px] text-white text-lg border-b-2 border-transparent transition-all" 
           active-class="!text-white !border-white"
           to="/"
@@ -27,15 +27,14 @@
         <router-link v-if="authStore.isAuthenticated" 
           class="inline-block hover:scale-110 mr-[40px] text-white text-lg border-b-2 border-transparent transition-all" 
           exact-active-class="!text-white !border-white"
+          to="/dashboard">
+          Mein Training
+        </router-link>
+        <router-link v-if="authStore.isAuthenticated" 
+          class="inline-block hover:scale-110 mr-[40px] text-white text-lg border-b-2 border-transparent transition-all" 
+          exact-active-class="!text-white !border-white"
           to="/core-data">
           Stammdaten
-        </router-link>
-        <router-link 
-          class="inline-block hover:scale-110 mr-[40px] text-white text-lg border-b-2 border-transparent transition-all" 
-          to="/ueber-uns"
-          exact-active-class="!text-white !border-white"
-        >
-          Über uns
         </router-link>
       </div>
       <div>
