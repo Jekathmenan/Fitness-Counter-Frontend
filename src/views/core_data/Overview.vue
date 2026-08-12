@@ -1,5 +1,5 @@
 <script setup>
-    import OverviewCard from '@/components/CoreDate/OverviewCard.vue';
+    import OverviewCard from '@/components/template/CoreDate/OverviewCard.vue';
     
 </script>
 <template>
