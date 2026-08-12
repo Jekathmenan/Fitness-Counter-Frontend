@@ -7,7 +7,7 @@
       },
       path: {
         type: String,
-        required: true
+        required: false
       },
       urlText: {
         type: String,
@@ -27,7 +27,7 @@
 <template>
   <header class="py-6 px-8 border-b border-slate-700">
     <!-- Back Button als dezenter Link -->
-    <router-link 
+    <router-link v-if="path"
       :to="path" 
       class="inline-flex items-center text-sm text-slate-400 hover:text-white transition-colors duration-200 mb-4"
     >
