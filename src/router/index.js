@@ -41,7 +41,7 @@ const routes = [
   { 
     path: '/dashboard', 
     name: 'dashboard', 
-    component: () => import("@/views/auth/DashboardView.vue"),
+    component: () => import("@/views/auth/WorkoutView.vue"),
   },
 ]
 
@@ -51,7 +51,7 @@ const router = createRouter ({
 })
 
 // Router Guard --> Alle routes ausser 
-router.beforeEach((to, from) => {
+router.beforeEach(async (to, from) => {
   const authStore = useAuthStore();
   
   const publicPages = ['home', 'login', 'register'];
