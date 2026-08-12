@@ -20,10 +20,20 @@
         }
     };
 
+    const ongoingWorkout = computed(() => {
+        if (!Array.isArray(workouts.value)) {
+            return false;
+        }
+        const workout = workouts.value.find(workout => workout.endTime === null);
+        console.log("ongoingWorkout", workout);
+        return workout;
+    });
+    
 
     onMounted(() => { fetchTrainingsData(); });
 </script>
 <template>
+    <Header title="Trainingserfassung" :add-text="ongoingWorkout ? 'Training bearbeiten' : 'Training starten'" />
     <div class="relative overflow-x-auto shadow-2xl rounded-xl border border-gray-700/50 bg-gray-800/50">
         <table class="w-full text-sm text-left text-gray-300">
             <!-- Header -->
