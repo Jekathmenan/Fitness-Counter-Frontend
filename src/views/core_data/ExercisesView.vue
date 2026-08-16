@@ -59,6 +59,20 @@
                     </td>
                     <td class="px-6 py-4 text-gray-400">
                         {{ exercise.bodyParts?.map(bp => bp.name).join(', ') || "" }}
+                        <div class="flex flex-wrap gap-1.5">
+                            <span 
+                            v-for="type in exercise.movements" 
+                            :key="type.id"
+                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                            >
+                            
+                            {{ type.name }}
+                            </span>
+
+                            <span v-if="!exercise.movements?.length" class="text-gray-600 text-xs italic">
+                            nicht definiert
+                            </span>
+                        </div>
                     </td>
                     <td class="px-6 py-4">
                     </td>
