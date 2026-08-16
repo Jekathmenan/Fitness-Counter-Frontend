@@ -29,7 +29,44 @@
         urlText="Zur&uuml;ck zu den Stammdaten"
         addText="Hinzuf&uuml;gen"
         addPath="/core-data/exercises/add"
+        />
+    
+    <div class="relative mt-5 overflow-x-auto shadow-2xl rounded-xl border border-gray-700/50 bg-gray-800/50">
+        <table class="w-full text-sm text-left text-gray-300">
+            <!-- Header -->
+            <thead class="text-xs uppercase tracking-wider bg-gray-900/50 text-gray-400 border-b border-gray-700">
+                <tr>
+                    <th scope="col" class="px-6 py-4 font-semibold">ID</th>
+                    <th scope="col" class="px-6 py-4 font-semibold">Name</th>
+                    <th scope="col" class="px-6 py-4 font-semibold">Beschreibung</th>
+                    <th scope="col" class="px-6 py-4 font-semibold">K&ouml;rperteile</th>
+                    <th scope="col" class="px-6 py-4 font-semibold text-right">
+                        Aktionen
+                    </th>
+                </tr>
+            </thead>
+            
+            <tbody class="divide-y divide-gray-700/50">
+                <tr v-for="exercise in exercises" class="hover:bg-gray-700/30 transition-all duration-200 group">
+                    <td class="px-6 py-4 text-gray-500 font-mono text-xs">
+                       #{{ exercise.id }}
+                    </td>
+                    <td class="px-6 py-4 font-bold text-white group-hover:text-blue-400 transition-colors">
+                        {{ exercise.name }}
+                    </td>
+                    <td class="px-6 py-4 font-bold text-white group-hover:text-blue-400 transition-colors">
+                        {{ exercise.description }}
+                    </td>
+                    <td class="px-6 py-4 text-gray-400">
+                        {{ exercise.bodyParts?.map(bp => bp.name).join(', ') || "" }}
+                    </td>
+                    <td class="px-6 py-4">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
+    </div>
 </template>
 <style lang="css" scoped>
 </style>
