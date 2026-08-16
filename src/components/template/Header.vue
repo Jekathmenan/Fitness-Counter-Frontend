@@ -20,6 +20,9 @@
       addText: {
         type: String,
         required: false
+      },
+      addPath: {
+        type: String
       }
     });
 </script>
@@ -41,9 +44,10 @@
         {{ title }} <span class="text-sm font-normal text-slate-500 ml-2">{{ spanText }}</span>
       </h1>
 
-      <button v-if="addText" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
-        <router-link class="flex" to="/core-data/body-parts/add"><span class="mr-2">{{ addText }} </span><CirclePlus class="w-5 h-5" /></router-link>
+      <button v-if="addText && addPath" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
+        <router-link class="flex" :to="addPath"><span class="mr-2">{{ addText }} </span><CirclePlus class="w-5 h-5" /></router-link>
       </button>
     </div>
   </header>
 </template>
+
