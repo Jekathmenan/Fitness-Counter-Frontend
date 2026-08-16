@@ -62,6 +62,7 @@
     <Header title="Körperteile" 
         path="/core-data"  addText="Hinzuf&uuml;gen"
         urlText="Zur&uuml;ck zu Stammdaten" 
+        addPath="/core-data/body-parts/add"
     />
 
     <div class="relative overflow-x-auto shadow-2xl rounded-xl border border-gray-700/50 bg-gray-800/50">
