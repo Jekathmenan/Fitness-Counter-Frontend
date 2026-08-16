@@ -8,6 +8,20 @@
     const flashStore = useFlashStore();
     const exercises = ref({});
     
+    const retrieveExercieses = async () =>  {
+        try {
+            const response = await apiClient.get("exercise/");
+            exercises.value =  response.data;
+            console.log(exercises.value);
+        } catch (error) {
+            flashStore.setFlash("Fehler beim Laden der Übungen.", "error");
+            console.error(error);
+        }
+    };
+
+    onMounted(() => {
+        retrieveExercieses();
+    } );
 </script>
 <template>
     <Header title="Übungen verwalten"
