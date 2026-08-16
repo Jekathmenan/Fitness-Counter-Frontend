@@ -40,14 +40,14 @@
       <div>
         <template v-if="!authStore.isAuthenticated">
           <router-link 
-            class="inline-block font-semibold text-base border-b-3 border-transparent bg-white px-4 py-1.5 rounded-full text-gray-900 mx-3 transform transition-all duration-200 hover:scale-105 hover:bg-gray-800 hover:text-white" 
+            class="inline-block font-semibold text-base hover:scale-110 border-b-3 border-transparent bg-white px-4 py-1.5 rounded-full text-gray-900 mx-3 transform transition-all duration-200 hover:scale-105 hover:bg-gray-800 hover:text-white" 
             active-class="!border-gray-300 !bg-gray-800 !text-white"
             to="/login"
           >
             Anmelden
           </router-link>
           <router-link 
-            class="inline-block font-semibold text-base  border-b-2  border-transparent bg-white px-4 py-1.5 rounded-full hover:scale-105 text-gray-900 hover:bg-gray-800 hover:text-white mx-3" 
+            class="inline-block font-semibold text-base hover:scale-110 border-b-2  border-transparent bg-white px-4 py-1.5 rounded-full hover:scale-105 text-gray-900 hover:bg-gray-800 hover:text-white mx-3" 
             active-class="!border-gray-300 !bg-gray-800 !text-white"
             to="/register"
           >
@@ -55,7 +55,7 @@
           </router-link>
         </template>
         <template v-else>
-          <a class="inline-block font-semibold text-base bg-white px-4 py-1.5 rounded-full hover:scale-105 text-gray-900 hover:bg-gray-800 hover:text-white mx-3" @click.prevent="handleLogout">
+          <a class="inline-block cursor-pointer hover:scale-110 font-semibold text-base bg-white px-4 py-1.5 rounded-full hover:scale-105 text-gray-900 hover:bg-gray-800 hover:text-white mx-3" @click.prevent="handleLogout">
             Abmelden
           </a>
         </template>
