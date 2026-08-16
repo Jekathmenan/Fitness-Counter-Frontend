@@ -23,6 +23,11 @@ const routes = [
     component: () => import("@/views/core_data/AddBodyPartsView.vue"),
   },
   { 
+    path: '/core-data/exercises', 
+    name: 'coreData.exercises', 
+    component: () => import("@/views/core_data/ExercisesView.vue"),
+  },
+  { 
     path: '/login', 
     name: 'login', 
     component: () => import("@/views/auth/LoginView.vue"),
