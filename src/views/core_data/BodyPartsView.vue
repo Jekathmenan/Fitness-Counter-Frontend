@@ -5,12 +5,14 @@
     import { useFlashStore } from '@/stores/flash';
     import ConfirmModal from '@/components/template/ConfirmModal.vue';
     import Header from '@/components/template/Header.vue';
+    import { useRouter } from 'vue-router';
 
     const bodyParts = ref({});
     const loading = ref(false);
     const isDeleteModalOpen = ref(false);
     const selectedItem = ref(null);
     const flashStore = useFlashStore();
+    const router = useRouter();
 
     const openDeleteModal = (item) => {
         selectedItem.value = item;
@@ -54,6 +56,12 @@
         }
     };
 
+    const redirectToEdit = (id) => {
+        router.push({
+            path: "/core-data/body-parts/edit/" + id
+        });
+    };
+
     onMounted (() => {
         retrieveBodyParts();
     })
@@ -92,7 +100,7 @@
                     </td>
                     <td class="px-6 py-4">
                         <div class="flex justify-end space-x-2">
-                            <button class="p-2 rounded-lg bg-gray-700/50 text-blue-400 hover:bg-blue-500 hover:text-white transition-all shadow-sm" title="Bearbeiten">
+                            <button @click="redirectToEdit(bodyPart.id)" class="p-2 rounded-lg bg-gray-700/50 text-blue-400 hover:bg-blue-500 hover:text-white transition-all shadow-sm" title="Bearbeiten">
                                 <Pencil class="w-4 h-4" />
                             </button>
                             <button  @click="openDeleteModal(bodyPart)" class="p-2 rounded-lg bg-gray-700/50 text-red-400 hover:bg-red-500 hover:text-white transition-all shadow-sm" title="Löschen">
