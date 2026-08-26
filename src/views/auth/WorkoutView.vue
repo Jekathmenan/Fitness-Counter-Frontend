@@ -8,7 +8,6 @@
     const flashStore = useFlashStore();
     const workouts = ref({});
     
-
     const fetchTrainingsData = async () => {
         try {
             const response = await apiClient.get('/workout/');
@@ -33,8 +32,11 @@
     onMounted(() => { fetchTrainingsData(); });
 </script>
 <template>
-    <Header title="Trainingserfassung" :add-text="ongoingWorkout ? 'Training bearbeiten' : 'Training starten'" />
-    <div class="relative overflow-x-auto shadow-2xl rounded-xl border border-gray-700/50 bg-gray-800/50">
+    <Header title="Trainingserfassung"  
+        :add-text="ongoingWorkout ? 'Training bearbeiten' : 'Training starten'" 
+        add-path="/workout"
+    />
+    <div class="mt-5 relative overflow-x-auto shadow-2xl rounded-xl border border-gray-700/50 bg-gray-800/50">
         <table class="w-full text-sm text-left text-gray-300">
             <!-- Header -->
             <thead class="text-xs uppercase tracking-wider bg-gray-900/50 text-gray-400 border-b border-gray-700">

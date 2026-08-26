@@ -32,7 +32,7 @@
       flashStore.setFlash("Erfolgreich angemeldet.", "info");
       // Redirect to Dashboard
       router.push({
-        name: 'dashboard'
+        name: 'workout'
       });
     } catch (error)
     {      

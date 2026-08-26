@@ -44,8 +44,8 @@ const routes = [
     component: () => import("@/views/auth/ForgotPasswordView.vue"),
   },
   { 
-    path: '/dashboard', 
-    name: 'dashboard', 
+    path: '/workout', 
+    name: 'workout', 
     component: () => import("@/views/auth/WorkoutView.vue"),
   },
 ]

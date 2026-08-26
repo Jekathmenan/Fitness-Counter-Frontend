@@ -27,7 +27,7 @@
         <router-link v-if="authStore.isAuthenticated" 
           class="inline-block hover:scale-110 mr-[40px] text-white text-lg border-b-2 border-transparent transition-all" 
           exact-active-class="!text-white !border-white"
-          to="/dashboard">
+          to="/workout">
           Mein Training
         </router-link>
         <router-link v-if="authStore.isAuthenticated" 
