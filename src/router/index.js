@@ -20,12 +20,27 @@ const routes = [
   { 
     path: '/core-data/body-parts/add', 
     name: 'coreData.bodyParts.add', 
-    component: () => import("@/views/core_data/AddBodyPartsView.vue"),
+    component: () => import("@/views/core_data/BodyPartsForm.vue"),
+  },
+  { 
+    path: '/core-data/body-parts/edit/:id', 
+    name: 'coreData.bodyParts.edit', 
+    component: () => import("@/views/core_data/BodyPartsForm.vue"),
   },
   { 
     path: '/core-data/exercises', 
     name: 'coreData.exercises', 
     component: () => import("@/views/core_data/ExercisesView.vue"),
+  },
+  { 
+    path: '/core-data/exercises/add', 
+    name: 'coreData.exercises.add', 
+    component: () => import("@/views/core_data/ExercisesForm.vue"),
+  },
+  { 
+    path: '/core-data/exercises/edit/:id', 
+    name: 'coreData.exercises.edit', 
+    component: () => import("@/views/core_data/ExercisesForm.vue"),
   },
   { 
     path: '/login', 
