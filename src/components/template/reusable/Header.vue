@@ -1,6 +1,6 @@
 <script setup>
-    import { ArrowLeft, CirclePlus } from 'icons';
-    const emit = defineEmits(["insertClicked"]);
+    import { ArrowLeft, CirclePlus, Pause } from 'icons';
+    const emit = defineEmits(["insertClicked", "secondaryButtonClicked"]);
     const props = defineProps({
       title: {
         type: String,
@@ -28,12 +28,15 @@
       }, 
       insertAction: {
         type: Boolean
-      }   
       },
       headerTextRight: {
         type: String,
         required: false
       },
+      showSecondaryButton: {
+        type: Boolean,
+        default: false
+      }
     });
 
     const handleClick = () => {
@@ -61,10 +64,15 @@
         {{ title }} <span class="text-sm font-normal text-slate-500 ml-2">{{ additionalTitle }}</span>
       </h1>
 
-      <button v-if="insertText && (insertPath || insertAction)" @click="handleClick" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
-        <router-link v-if="insertPath" class="flex" :to="insertPath"><span class="mr-2">{{ insertText }} </span><CirclePlus class="w-5 h-5" /></router-link>
-        <span v-if="insertAction" class="flex" ><span class="mr-2">{{ insertText }} </span><CirclePlus class="w-5 h-5" /></span>
-      </button>
+      <div class="flex flex-col">
+        <button v-if="insertText && (insertPath || insertAction)" @click="handleClick" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
+          <router-link v-if="insertPath" class="flex" :to="insertPath"><span class="mr-2">{{ insertText }} </span><CirclePlus class="w-5 h-5" /></router-link>
+          <span v-if="insertAction" class="flex" ><span class="mr-2">{{ insertText }} </span><CirclePlus class="w-5 h-5" /></span>
+        </button>
+        <button v-if="showSecondaryButton" @click="emit('secondaryButtonClicked')" class=" mt-2 bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
+          <span class="flex">Training beenden <Pause class="mx-1 w-5 h-5" /></span>
+        </button>
+      </div>
     </div>
   </header>
 </template>

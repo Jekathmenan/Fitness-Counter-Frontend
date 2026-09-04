@@ -5,6 +5,7 @@
     import { onMounted, ref, computed, onUnmounted } from 'vue';
     import { useFlashStore } from '@/stores/flash';
     import apiClient from '@/api/client';
+    import { useRouter } from 'vue-router';
 
     const flash = useFlashStore();
     const router = useRouter();
@@ -28,6 +29,7 @@
 
         return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
     });
+
     // Lädt das aktive Training
     const retrieveActiveWorkout = async () => {
         try {
@@ -101,10 +103,28 @@
             console.error(error);
         }
     }
+
+    const stopWorkout = async () => {
+        try {
+            const response = await apiClient.post("workout/end/" + workout.value?.id);
+            flash.setFlash("Training beendet", "success");
+            router.push({
+                name: "workout"
+            })
+        } catch (error) {
+            flash.setFlash("Fehler beim Beenden des Trainings.", "error");
+            console.error(error);
+        }
+    };
     
     onMounted(async () => {
         // Lade das aktive Training, sobald diese Seite/Komponente geladen wird
         await retrieveActiveWorkout();
+        timerInterval = setInterval(() => {
+            now.value = new Date();
+        }, 1000);
+    });
+
     onUnmounted(() => {
         if (timerInterval) clearInterval(timerInterval);
     });
@@ -119,6 +139,8 @@
         insertText="&Uuml;bung einfügen"
         @insertClicked="showModal"
         :headerTextRight="elapsedTime"
+        showSecondaryButton
+        @secondaryButtonClicked="stopWorkout"
     />
 
     <AddExercise 
