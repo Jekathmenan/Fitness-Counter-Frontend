@@ -61,7 +61,13 @@ const routes = [
   { 
     path: '/workout', 
     name: 'workout', 
-    component: () => import("@/views/auth/WorkoutView.vue"),
+    component: () => import("@/views/workout/WorkoutView.vue"),
+  },
+  { 
+    // TODO: Find a more matching route name
+    path: '/workout/add', 
+    name: 'workout.add', 
+    component: () => import("@/views/workout/WorkoutForm.vue"),
   },
 ]
 
