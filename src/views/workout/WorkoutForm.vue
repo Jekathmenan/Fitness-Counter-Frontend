@@ -2,7 +2,6 @@
     import Header from '@/components/template/reusable/Header.vue';
     import WorkoutExerciseCard from '@/components/template/workout/WorkoutExerciseCard.vue';
     import AddExercise from '@/components/template/workout/AddExercise.vue';
-    import ConfirmModal from '@/components/template/reusable/ConfirmModal.vue';
     import { onMounted, ref } from 'vue';
     import { useFlashStore } from '@/stores/flash';
     import apiClient from '@/api/client';
@@ -57,8 +56,6 @@
             console.error(error);
         }
     };
-
-    
 
     // Zeigt "Übung einfügen"-Karte an
     const showModal = async () => {

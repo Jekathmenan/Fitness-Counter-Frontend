@@ -4,6 +4,7 @@
     import {  Check , Trash2 } from 'icons';
     import { useFlashStore } from '@/stores/flash';
     import apiClient from '@/api/client';
+    import ConfirmModal from '../reusable/ConfirmModal.vue';
 
     const props = defineProps({
         set: {
@@ -17,12 +18,15 @@
         
     });
 
-    const emit = defineEmits(["setChanged",]);
+    const emit = defineEmits(["setChanged"]);
 
     const flash = useFlashStore();
     const weight = ref(0);
     const reps = ref(0);
     const errors = ref({});
+
+    const isDeleteModalOpen = ref(false);
+    const allowDelete = ref(false);
 
     const saveChanges = async (set) => {
         try {
@@ -66,11 +70,18 @@
     };
 
     const openDeleteModal = () => {
-
+        isDeleteModalOpen.value = true;
     };
 
-    const handleDelete = async () => {
-
+    const handleDeleteConfirm = async () => {
+        try {
+            const response = await apiClient.delete("workout/"+ props.exerciseId + "/set/"+ props.set.id);
+            emit("setChanged", response.data);
+        } catch (error) {
+            flash.setFlash("Fehler beim Löschen des Satzes", "error");
+            console.error(error);
+        }
+        
     };
 
     onMounted(() => {
@@ -107,4 +118,14 @@
             </button>
         </div>
     </td>
+    <ConfirmModal
+        :is-open="isDeleteModalOpen"
+        title="Satz löschen?"
+        message="Möchten Sie diesen Satz wirklich entfernen?"
+        :item="set"
+        :displayName ="'Gewicht: ' + weight + ' / Wiederholungen: ' + reps"
+        :allowDelete="true"
+        @close="isDeleteModalOpen = false"
+        @confirm="handleDeleteConfirm"
+    />
 </template>
