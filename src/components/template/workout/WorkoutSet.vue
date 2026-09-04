@@ -1,6 +1,5 @@
 <script setup>
-    import { ref } from 'vue';
-    import { onMounted } from 'vue';
+    import { ref, computed, onMounted } from 'vue';
     import {  Check , Trash2 } from 'icons';
     import { useFlashStore } from '@/stores/flash';
     import apiClient from '@/api/client';
@@ -15,7 +14,6 @@
             type: Number,
             required: true
         }
-        
     });
 
     const emit = defineEmits(["setChanged"]);
@@ -26,7 +24,10 @@
     const errors = ref({});
 
     const isDeleteModalOpen = ref(false);
-    const allowDelete = ref(false);
+    
+    const isWeightChanged = computed(() => props.set.weight != weight.value);
+    const isRepsChanged = computed(() => props.set.reps != reps.value);
+    const needsSave = computed(() => isWeightChanged.value || isRepsChanged.value);
 
     const saveChanges = async (set) => {
         try {
@@ -95,23 +96,38 @@
     </td> -->
     <td class="px-3 py-2 font-bold text-white hover:text-blue-400 transition-colors">
         <input v-model="weight" maxlength="4" 
-            :class="errors.weight ? 'border-red-500 text-red-500' : 'border-gray-600 focus:border-blue-500 text-white'"    
+            :class="
+                errors.weight ? 
+                    'border-red-500 text-red-500' : 
+                    'border-gray-600 focus:border-blue-500 text-white',
+                (isWeightChanged && !errors.weight) ?
+                    'border-amber-500 bg-amber-500/10 ring-1 ring-amber-500' :
+                    ''
+            " 
             class="w-15 px-2 text-center rounded-lg border border-gray-600" />
 
     </td>
     <td class="px-3 py-2 font-bold text-white hover:text-blue-400 transition-colors">
-        <input v-model="reps" maxlength="4" class="w-15 px-2 text-center rounded-lg border border-gray-600" />
-        <span v-if="errors.reps" 
-            class="mt-2 text-sm text-red-600"
-            >
-            {{ errors.reps }}
-        </span>
+        <input v-model="reps" maxlength="4" 
+            :class="errors.reps ?
+                'border-red-500 text-red-500' :
+                'border-gray-600 focus:border-blue-500 text-white',
+                (isRepsChanged && !errors.reps) ?
+                'border-amber-500 bg-amber-500/10 ring-1 ring-amber-500' :
+                ''
+            "
+            class="w-15 px-2 text-center rounded-lg border border-gray-600" />
     </td>
     
     <td class="px-3 py-2">
         <div class="flex justify-end space-x-2">
-            <button @click="saveChanges" class="p-2 rounded-lg bg-gray-700/50 text-blue-400 hover:bg-blue-500 hover:text-white transition-all shadow-sm" title="Bearbeiten">
-                <Check  class="w-4 h-4" />
+            <button @click="saveChanges" 
+                class="p-2 rounded-lg bg-gray-700/50 text-blue-400 hover:bg-blue-500 hover:text-white transition-all shadow-sm" 
+                :class="needsSave ? 'bg-green-600 ' : ''"
+                title="Bearbeiten"
+                :disabled="!needsSave"
+                >
+                <Check  class="w-4 h-4" :class="needsSave ? 'text-white' : ''" />
             </button>
             <button  @click="openDeleteModal" class="p-2 rounded-lg bg-gray-700/50 text-red-400 hover:bg-red-500 hover:text-white transition-all shadow-sm" title="Löschen">
                 <Trash2 class="w-4 h-4" />
