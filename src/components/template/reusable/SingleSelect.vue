@@ -24,7 +24,7 @@ const filteredOptions = computed(() => {
 const selectOption = (item) => {
     emit('update:modelValue', item);
     searchTerm.value = ""; // Suchfeld leeren
-    isDropdownOpen.value = false; // Dropdown schließen
+    isDropdownOpen.value = false; // Dropdown schliessen
 };
 
 const handleClickOutside = (event) => {
@@ -61,7 +61,7 @@ onUnmounted(() => window.removeEventListener('click', handleClickOutside));
             
             <div 
                 v-if="isDropdownOpen && !modelValue" 
-                class="absolute z-[60] w-full mt-2 max-h-60 overflow-y-auto bg-gray-800 border border-gray-700 rounded-lg shadow-2xl"
+                class="absolute z-[60] w-full mt-2 max-h-40 overflow-y-auto bg-gray-800 border border-gray-700 rounded-lg shadow-2xl"
             >
                 <div 
                     v-for="opt in filteredOptions" 

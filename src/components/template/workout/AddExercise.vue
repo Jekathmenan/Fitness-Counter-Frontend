@@ -47,7 +47,7 @@ const handleConfirm = () => {
                         v-model="selectedExercise"
                         :options="exercises"
                         label="Übung auswählen"
-                        placeholder="Z.B. Bankdrücken..."
+                        placeholder="Übung auswählen"
                     />
 
                     <div class="flex gap-3 pt-4">
