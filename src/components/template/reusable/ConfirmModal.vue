@@ -12,6 +12,14 @@ const props = defineProps({
   allowDelete: {
     type: Boolean,
     default: true
+  },
+  displayId:  {
+    type: Number,
+    required: false
+  },
+  displayName: {
+    type: String,
+    required: false
   }
 });
 
@@ -20,6 +28,7 @@ const emit = defineEmits(['close', 'confirm']);
 const handleSubmit = () => {
   emit('confirm');
 };
+
 </script>
 
 <template>
@@ -51,7 +60,7 @@ const handleSubmit = () => {
           <form @submit.prevent="handleSubmit" class="space-y-4">
             <div v-if="item" class="p-3 bg-gray-900/50 rounded-lg border border-gray-700">
                 <span class="text-xs text-gray-500 uppercase font-bold tracking-wider">Zu löschendes Element:</span>
-                <p class="text-white font-medium">#{{ item.id }} {{ item.name }}</p>
+                <p class="text-white font-medium">#{{ displayId ?? item.id }} {{ displayName ?? item.name }}</p>
             </div>
 
             <div class="flex flex-col sm:flex-row gap-3 pt-2">
