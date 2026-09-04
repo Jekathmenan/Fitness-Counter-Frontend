@@ -2,7 +2,7 @@
   import { ref, onMounted, computed } from 'vue';
   import { useFlashStore } from '@/stores/flash';
   import { useRouter, useRoute } from 'vue-router';
-  import Header from '@/components/template/Header.vue';
+  import Header from '@/components/template/reusable/Header.vue';
   import apiClient from '@/api/client';
 
   const router = useRouter();

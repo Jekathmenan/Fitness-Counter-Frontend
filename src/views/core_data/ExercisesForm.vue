@@ -2,10 +2,10 @@
   import { ref, onMounted, computed } from 'vue';
   import { useFlashStore } from '@/stores/flash';
   import { useRouter, useRoute } from 'vue-router'; 
-  import Header from '@/components/template/Header.vue';
+  import Header from '@/components/template/reusable/Header.vue';
   import apiClient from '@/api/client';
-  import MultiSelect from '@/components/template/MultiSelect.vue';
-  import WriteSelect from '@/components/template/WriteSelect.vue';
+  import MultiSelect from '@/components/template/reusable/MultiSelect.vue';
+  import WriteSelect from '@/components/template/reusable/WriteSelect.vue';
 
   const router = useRouter();
   const route = useRoute();

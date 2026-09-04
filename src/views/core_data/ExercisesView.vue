@@ -1,6 +1,6 @@
 <script setup>
-    import Header from '@/components/template/Header.vue';
-    import ConfirmModal from '@/components/template/ConfirmModal.vue';
+    import Header from '@/components/template/reusable/Header.vue';
+    import ConfirmModal from '@/components/template/reusable/ConfirmModal.vue';
     import { ref, onMounted } from 'vue';
     import { useFlashStore } from '@/stores/flash';
     import apiClient from '@/api/client';

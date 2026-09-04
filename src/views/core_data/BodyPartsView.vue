@@ -3,8 +3,8 @@
     import apiClient from '@/api/client';
     import {  Pencil, Trash2 } from 'icons';
     import { useFlashStore } from '@/stores/flash';
-    import ConfirmModal from '@/components/template/ConfirmModal.vue';
-    import Header from '@/components/template/Header.vue';
+    import ConfirmModal from '@/components/template/reusable/ConfirmModal.vue';
+    import Header from '@/components/template/reusable/Header.vue';
     import { useRouter } from 'vue-router';
 
     const bodyParts = ref({});
