@@ -1,5 +1,5 @@
 <script setup>
-    import {  Trash2 } from 'icons';
+    import {  Plus, Trash2 } from 'icons';
     import WorkoutSet from './WorkoutSet.vue';
     import { onMounted, ref } from 'vue';
     import ConfirmModal from '../reusable/ConfirmModal.vue';
@@ -31,6 +31,21 @@
         tempWorkout.value.workoutSets = payload.workoutSets;
         emit('workoutDeleted', tempWorkout.value);
     } 
+
+    const addNewSet = async () => {
+        try {
+            const response = await apiClient.post("workout/"+ tempWorkout.value.id + "/set", {
+                weight: 0,
+                reps: 0
+            });
+            console.log("done");
+            tempWorkout.value = response.data;
+            emit("workoutChanged");
+        } catch (error) {
+            flash.setFlash("Fehler beim Einfügen des neuen Satzes", "error");
+            console.error(error);
+        }
+    };
 
     const openDeleteModal = () => {
         allowDelete.value = props.workoutExercise?.workoutSets?.length == 0 || (props.workoutExercise?.workoutSets?.length == 1 && props.workoutExercise?.workoutSets[0].weight == 0 && props.workoutExercise?.workoutSets[0].reps == 0);
@@ -69,7 +84,11 @@
             <h3 class="text-xl font-bold mt-1">
                 {{ tempWorkout?.exercise?.name || "Übung unbekannt" }}
             </h3>
-            <button @click="openDeleteModal" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg text-xs transition"><Trash2 class="w-3 h-3" /></button>
+            <div class="buttons">
+                <button @click="addNewSet" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-xs transition"><Plus class="w-3 h-3" /></button>
+                <button @click="openDeleteModal" class="mx-2 bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg text-xs transition"><Trash2 class="w-3 h-3" /></button>
+            </div>
+            
         </div>
 
         <div class="text-gray-400 text-sm">
