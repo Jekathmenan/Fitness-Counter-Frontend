@@ -46,7 +46,6 @@ const routes = [
     path: '/login', 
     name: 'login', 
     component: () => import("@/views/auth/LoginView.vue"),
-
   },
   { 
     path: '/register', 
@@ -76,16 +75,22 @@ const router = createRouter ({
     routes
 })
 
-// Router Guard --> Alle routes ausser 
 router.beforeEach(async (to, from) => {
   const authStore = useAuthStore();
   
-  const publicPages = ['home', 'login', 'register'];
-  const authRequired = !publicPages.includes(to.name);
+  const publicPages = ['home', 'login', 'register', 'forgotPassword'];
+  const isPublicPage = publicPages.includes(to.name);
+  const isAuthenticated = authStore.isAuthenticated;
 
-  if (authRequired && !authStore.isAuthenticated) {
-    next({ name: 'login' });
-  } 
+  // Leite zu login weiter, wenn Zielseite Login erfordert und Benutzer nicht eingeloggt ist.
+  if (!isPublicPage && !isAuthenticated) {
+    return { name: 'login' };
+  }
+
+  // Verbiete guestOnly Routes wenn eingeloggt
+  if (isPublicPage && isAuthenticated) {
+    return { name: 'workout' };
+  }
 
   return true;
 });
