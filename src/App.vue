@@ -1,7 +1,7 @@
 <script setup>
   import Nav from '@/components/template/Nav.vue';
   import Footer from '@/components/template/Footer.vue';
-  import FlashMessage from './components/template/FlashMessage.vue';
+  import FlashMessage from './components/template/reusable/FlashMessage.vue';
 </script>
 <template>
   <div class="app-container">
