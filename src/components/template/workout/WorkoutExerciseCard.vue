@@ -2,8 +2,12 @@
     import {  Trash2 } from 'icons';
     import WorkoutSet from './WorkoutSet.vue';
     import { onMounted, ref } from 'vue';
+    import ConfirmModal from '../reusable/ConfirmModal.vue';
+    import { useFlashStore } from '@/stores/flash.js';
+    import apiClient from '@/api/client.js';
 
-    const emit = defineEmits(["deleteClicked", "workoutChanged"]);
+    const emit = defineEmits(["workoutDeleted", "workoutChanged"]);
+    const flash = useFlashStore();
 
     const props = defineProps({
         title: {
@@ -12,19 +16,44 @@
         workoutExercise: {
             type: Object,
             required: true
+        },
+        workoutId: {
+            type: Number,
+            required: true
         }
     });
 
+    const isDeleteModalOpen = ref(false);
+    const allowDelete = ref(false);
     const tempWorkout = ref({});
-
-    const handleClick = () => {
-        emit('deleteClicked');
-    };
 
     const setChanged = (payload) => {
         tempWorkout.value.workoutSets = payload.workoutSets;
-        emit('workoutChanged', tempWorkout.value);
+        emit('workoutDeleted', tempWorkout.value);
     } 
+
+    const openDeleteModal = () => {
+        allowDelete.value = props.workoutExercise?.workoutSets?.length == 0 || (props.workoutExercise?.workoutSets?.length == 1 && props.workoutExercise?.workoutSets[0].weight == 0 && props.workoutExercise?.workoutSets[0].reps == 0);
+        isDeleteModalOpen.value = true;
+    };
+
+    const handleDeleteConfirm = async () => {
+        try {
+            if (allowDelete) {
+                // Lösche Übung
+                await apiClient.delete("workout/" +  props.workoutId + "/exercise/" + props.workoutExercise.id);
+
+                // Lade aktive Übungen neu
+                emit("workoutDeleted");
+
+                // Schliesse "Löschen"-Karte
+                isDeleteModalOpen.value = false;
+            }
+        } catch (error) {
+            flash.setFlash("Fehler beim Löschen der Übung.", "error");
+            console.error(error);
+        }
+    }; 
 
     onMounted( () => {
         tempWorkout.value = props.workoutExercise;
@@ -40,7 +69,7 @@
             <h3 class="text-xl font-bold mt-1">
                 {{ tempWorkout?.exercise?.name || "Übung unbekannt" }}
             </h3>
-            <button @click="handleClick" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg text-xs transition"><Trash2 class="w-3 h-3" /></button>
+            <button @click="openDeleteModal" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg text-xs transition"><Trash2 class="w-3 h-3" /></button>
         </div>
 
         <div class="text-gray-400 text-sm">
@@ -64,4 +93,15 @@
             </table>
         </div>
     </div>
+    <ConfirmModal
+        :is-open="isDeleteModalOpen"
+        title="Übung löschen?"
+        :message="allowDelete ? 'Möchten Sie die Übung wirklich aus dem Training entfernen?' : 
+        'Übung wird bereits verwendet und kann nicht gelöscht werden!'"
+        :item="tempWorkout"
+        :displayName ="tempWorkout?.exercise?.name"
+        :allowDelete="allowDelete"
+        @close="isDeleteModalOpen = false"
+        @confirm="handleDeleteConfirm"
+    />
 </template>

@@ -12,9 +12,6 @@
     const workoutExercises = ref([]);
     const allExercises = ref([]);
     const showAddModal = ref(false);
-    const itemToDelete = ref([]);
-    const allowDelete = ref(false);
-    const isDeleteModalOpen = ref(false);
 
     // Lädt das aktive Training
     const retrieveActiveWorkout = async () => {
@@ -91,33 +88,6 @@
             console.error(error);
         }
     }
-
-    // Öffnet "Löschen"-Karte
-    const openDeleteModal =  (exercise) => {
-        itemToDelete.value = exercise;
-        allowDelete.value = exercise?.workoutSets?.length == 0 || (exercise?.workoutSets?.length == 1 && exercise?.workoutSets[0].weight == 0 && exercise?.workoutSets[0].reps == 0);
-        isDeleteModalOpen.value = true;
-    };
-
-    // Löscht die Übung aus der Übung
-    const handleDeleteConfirm = async () => {
-        try {
-            if (itemToDelete?.value.workoutSets?.length >= 0) {
-                
-                // Lösche Übung
-                await apiClient.delete("workout/" +  workout.value.id + "/exercise/" + itemToDelete.value.id);
-
-                // Lade aktive Übungen neu
-                retrieveActiveExercises();
-
-                // Schliesse "Löschen"-Karte
-                isDeleteModalOpen.value = false;
-            }
-        } catch (error) {
-            flash.setFlash("Fehler beim Löschen der Übung.", "error");
-            console.error(error);
-        }
-    };
     
     onMounted(async () => {
         // Lade das aktive Training, sobald diese Seite/Komponente geladen wird
@@ -146,22 +116,12 @@
         <WorkoutExerciseCard 
             v-for="ex in workoutExercises" :key="ex.id"     
             :workoutExercise="ex" 
-            @deleteClicked="openDeleteModal(ex)"
+            :workoutId="workout.id"
+            @workoutDeleted="retrieveActiveExercises"
             @workoutChanged="retrieveActiveExercises"
         />
     </div>
-
-    <ConfirmModal
-        :is-open="isDeleteModalOpen"
-        title="Übung löschen?"
-        :message="allowDelete ? 'Möchten Sie die Übung wirklich aus dem Training entfernen?' : 
-        'Übung wird bereits verwendet und kann nicht gelöscht werden!'"
-        :item="itemToDelete"
-        :displayName ="itemToDelete?.exercise?.name"
-        :allowDelete="allowDelete"
-        @close="isDeleteModalOpen = false"
-        @confirm="handleDeleteConfirm"
-    />
+    
 </template>
 
 <style>
