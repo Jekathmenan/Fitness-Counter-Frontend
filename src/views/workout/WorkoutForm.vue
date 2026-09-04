@@ -2,16 +2,32 @@
     import Header from '@/components/template/reusable/Header.vue';
     import WorkoutExerciseCard from '@/components/template/workout/WorkoutExerciseCard.vue';
     import AddExercise from '@/components/template/workout/AddExercise.vue';
-    import { onMounted, ref } from 'vue';
+    import { onMounted, ref, computed, onUnmounted } from 'vue';
     import { useFlashStore } from '@/stores/flash';
     import apiClient from '@/api/client';
 
     const flash = useFlashStore();
-    const workout = ref([]);
+    const router = useRouter();
+    const workout = ref(null);
     const workoutExercises = ref([]);
     const allExercises = ref([]);
     const showAddModal = ref(false);
 
+    const now = ref(new Date());
+    let timerInterval = null;
+
+    const elapsedTime = computed(() => {
+        const start = new Date(workout.value?.startTime);
+        const diff = Math.max(0, now.value - start); 
+
+        const seconds = Math.floor((diff / 1000) % 60);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+
+        const pad = (num) => String(num).padStart(2, '0');
+
+        return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+    });
     // Lädt das aktive Training
     const retrieveActiveWorkout = async () => {
         try {
@@ -89,7 +105,10 @@
     onMounted(async () => {
         // Lade das aktive Training, sobald diese Seite/Komponente geladen wird
         await retrieveActiveWorkout();
+    onUnmounted(() => {
+        if (timerInterval) clearInterval(timerInterval);
     });
+    
 </script>
 <template>
     <Header 
@@ -99,6 +118,7 @@
         insertAction
         insertText="&Uuml;bung einfügen"
         @insertClicked="showModal"
+        :headerTextRight="elapsedTime"
     />
 
     <AddExercise 
@@ -108,7 +128,6 @@
         @confirm="addExercise"
         
     />
-
     <div class="flex flex-wrap justify-start items-start w-full gap-4 p-4" >
         <WorkoutExerciseCard 
             v-for="ex in workoutExercises" :key="ex.id"     

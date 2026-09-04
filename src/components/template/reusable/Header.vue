@@ -29,6 +29,11 @@
       insertAction: {
         type: Boolean
       }   
+      },
+      headerTextRight: {
+        type: String,
+        required: false
+      },
     });
 
     const handleClick = () => {
@@ -39,13 +44,16 @@
 <template>
   <header class="py-6 px-8 border-b border-slate-700">
     <!-- Back Button als dezenter Link -->
-    <router-link v-if="backToUrl"
-      :to="backToUrl" 
-      class="inline-flex items-center text-sm text-slate-400 hover:text-white transition-colors duration-200 mb-4"
-    >
-      <ArrowLeft class="w-4 h-4 mr-2" />
-      {{ backToUrlText ? backToUrlText : "Zurück zur Übersicht" }}
-    </router-link>
+    <div class="flex items-center justify-between">
+      <router-link v-if="backToUrl"
+        :to="backToUrl" 
+        class="inline-flex items-start items-center text-sm text-slate-400 hover:text-white transition-colors duration-200 mb-4"
+        >
+        <ArrowLeft class="w-4 h-4 mr-2" />
+        {{ backToUrlText ? backToUrlText : "Zurück zur Übersicht" }}
+      </router-link>
+      <div v-if="headerTextRight" class="items-end my-2 py-1 px-3 rounded-xl font-bold bg-gray-500">{{ headerTextRight }}</div>
+    </div>
 
     <!-- Haupttitel -->
     <div class="flex items-center justify-between">

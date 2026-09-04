@@ -25,6 +25,20 @@
         const workout = workouts.value.find(workout => workout.endTime === null);
         return workout;
     });
+
+    const calculateTimeSofar = (workout) => {
+        const start = new Date(workout.startTime);
+        const end = new Date(workout.endTime);
+        console.log("start:" + start + " end:" + end)
+        const diff = Math.max(0, end - start); 
+        const seconds = Math.floor((diff / 1000) % 60);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+
+        const pad = (num) => String(num).padStart(2, '0');
+
+        return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+    };
     
 
     onMounted(() => { fetchTrainingsData(); });
@@ -42,7 +56,7 @@
                     <th scope="col" class="px-6 py-4 font-semibold">ID</th>
                     <th scope="col" class="px-6 py-4 font-semibold">Name</th>
                     <th scope="col" class="px-6 py-4 font-semibold">Startzeit</th>
-                    <th scope="col" class="px-6 py-4 font-semibold">Endzeit</th>
+                    <th scope="col" class="px-6 py-4 font-semibold">Dauer</th>
                     <th scope="col" class="px-6 py-4 font-semibold">
                         Total &Uuml;bungen
                     </th>
@@ -61,7 +75,7 @@
                         {{ formatGermanDateTime(workout.startTime) }}
                     </td>
                     <td class="px-6 py-4 text-gray-400">
-                        {{ formatGermanDateTime(workout.endTime) ?? "Training läuft" }}
+                        {{ workout.endTime == null ? 'Training läuft' : calculateTimeSofar(workout) }}
                     </td>
                     <td class="px-6 py-4 text-gray-400">
                         {{ workout.workoutExercises.length }}
