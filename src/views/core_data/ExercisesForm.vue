@@ -95,8 +95,8 @@
 
 <template>
   <Header :title="pageTitle" 
-    path="/core-data/exercises" 
-    urlText="Zurück zur Übersicht" 
+    backToUrl="/core-data/exercises" 
+    backToUrlText="Zurück zur Übersicht" 
   />
 
   <div class="max-w-2xl mx-auto mt-8">

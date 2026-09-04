@@ -69,8 +69,8 @@
 
 <template>
   <Header :title="pageTitle" 
-    path="/core-data/body-parts" 
-    urlText="Zurück zur Übersicht" 
+    backToUrl="/core-data/body-parts" 
+    backToUrlText="Zurück zur Übersicht" 
   />
 
   <div class="max-w-2xl mx-auto mt-8">

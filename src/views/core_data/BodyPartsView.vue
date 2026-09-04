@@ -68,12 +68,12 @@
 </script>
 <template>
     <Header title="Körperteile" 
-        path="/core-data"  addText="Hinzuf&uuml;gen"
-        urlText="Zur&uuml;ck zu Stammdaten" 
-        addPath="/core-data/body-parts/add"
+        backToUrl="/core-data"  insertText="Hinzuf&uuml;gen"
+        backToUrlText="Zur&uuml;ck zu den Stammdaten" 
+        insertPath="/core-data/body-parts/add"
     />
 
-    <div class="relative overflow-x-auto shadow-2xl rounded-xl border border-gray-700/50 bg-gray-800/50">
+    <div class="relative mt-5 overflow-x-auto shadow-2xl rounded-xl border border-gray-700/50 bg-gray-800/50">
         <table class="w-full text-sm text-left text-gray-300">
             <!-- Header -->
             <thead class="text-xs uppercase tracking-wider bg-gray-900/50 text-gray-400 border-b border-gray-700">
@@ -116,7 +116,7 @@
             :is-open="isDeleteModalOpen"
             title="Körperteil löschen?"
             :message="selectedItem?.unused 
-                ? 'Möchten Sie den Körperteil wirklich dauerhaut aus der Datenbank entfernen? Diese Aktion kann nicht rückgängig gemacht werden.'  
+                ? 'Möchten Sie den Körperteil wirklich dauerhaft aus der Datenbank entfernen? Diese Aktion kann nicht rückgängig gemacht werden.'  
                 : 'Körperteil kann nicht gelöscht werden, da es in Übungen verwendet wird!'"
             :item="selectedItem"
             :allowDelete="selectedItem?.unused"

@@ -59,10 +59,10 @@
 </script>
 <template>
     <Header title="Übungen verwalten"
-        path="/core-data"
-        urlText="Zur&uuml;ck zu den Stammdaten"
-        addText="Hinzuf&uuml;gen"
-        addPath="/core-data/exercises/add"
+        backToUrl="/core-data"
+        backToUrlText="Zur&uuml;ck zu den Stammdaten"
+        insertText="Hinzuf&uuml;gen"
+        insertPath="/core-data/exercises/add"
     />
     
     <div class="relative mt-5 overflow-x-auto shadow-2xl rounded-xl border border-gray-700/50 bg-gray-800/50">
