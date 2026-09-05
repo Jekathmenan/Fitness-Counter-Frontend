@@ -5,14 +5,17 @@
     import { onMounted, ref, computed, onUnmounted } from 'vue';
     import { useFlashStore } from '@/stores/flash';
     import apiClient from '@/api/client';
-    import { useRouter } from 'vue-router';
+    import { useRouter, useRoute } from 'vue-router';
 
     const flash = useFlashStore();
     const router = useRouter();
+    const route = useRoute();
     const workout = ref(null);
     const workoutExercises = ref([]);
     const allExercises = ref([]);
     const showAddModal = ref(false);
+    const id = route.params.id; 
+    const isEditMode = computed(() => !route.params.id);
 
     const now = ref(new Date());
     let timerInterval = null;
@@ -33,17 +36,27 @@
     // Lädt das aktive Training
     const retrieveActiveWorkout = async () => {
         try {
-            // Lade die aktive Training
-            const activeRes = await apiClient.get("workout/active");
-            workout.value = activeRes.data;
+            
+            if (isEditMode && !!id) {
+                console.log("in edit mode. Id is ", id);
+                const response = await apiClient.get("workout/"+id);
+                workout.value = response.data;
+                workoutExercises.value = workout.value.workoutExercises;
+                console.log(response.data);
+            } else {
+                // Lade die aktive Training
+                const activeRes = await apiClient.get("workout/active");
+                workout.value = activeRes.data;
 
-            // Starte neues Training, wenn noch keins läuft
-            if (!workout.value || Object.keys(workout.value).length === 0) {
-                const startRes = await apiClient.post("workout/start", {});
-                workout.value = startRes.data;
+                // Starte neues Training, wenn noch keins läuft
+                if (!workout.value || Object.keys(workout.value).length === 0) {
+                    const startRes = await apiClient.post("workout/start", {});
+                    workout.value = startRes.data;
+                }
+
+                workoutExercises.value = workout.value.workoutExercises;
             }
-
-            workoutExercises.value = workout.value.workoutExercises;
+            
         } 
         catch (error) {
             flash.setFlash("Fehler beim Laden des Trainings.", "error",);
@@ -118,15 +131,17 @@
     };
     
     onMounted(async () => {
-        // Lade das aktive Training, sobald diese Seite/Komponente geladen wird
         await retrieveActiveWorkout();
-        timerInterval = setInterval(() => {
-            now.value = new Date();
-        }, 1000);
+
+        if (isEditMode.value) { 
+            timerInterval = setInterval(() => {
+                now.value = new Date();
+            }, 1000);
+        }
     });
 
     onUnmounted(() => {
-        if (timerInterval) clearInterval(timerInterval);
+        if (isEditMode.value && timerInterval) clearInterval(timerInterval);
     });
     
 </script>
@@ -136,15 +151,16 @@
         backToUrl="/workout"
         backToUrlText="Zur&uuml;ck zur &Uuml;bersicht"
         insertAction
+        :disableInsertBtn="!isEditMode"
         insertText="&Uuml;bung einfügen"
         @insertClicked="showModal"
-        :headerTextRight="elapsedTime"
-        showSecondaryButton
+        :headerTextRight="isEditMode ? elapsedTime : ''"
+        :showSecondaryButton="isEditMode"
         @secondaryButtonClicked="stopWorkout"
     />
 
     <AddExercise 
-        v-if="showAddModal" 
+        v-if="isEditMode && showAddModal" 
         :exercises="allExercises"
         @close="showAddModal = false"
         @confirm="addExercise"
@@ -154,6 +170,7 @@
         <WorkoutExerciseCard 
             v-for="ex in workoutExercises" :key="ex.id"     
             :workoutExercise="ex" 
+            :editable="isEditMode"
             :workoutId="workout.id"
             @workoutDeleted="retrieveActiveExercises"
             @workoutChanged="retrieveActiveExercises"

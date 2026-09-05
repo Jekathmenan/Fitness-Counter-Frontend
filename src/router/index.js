@@ -64,10 +64,15 @@ const routes = [
   },
   { 
     // TODO: Find a more matching route name
-    path: '/workout/add', 
-    name: 'workout.add', 
+    path: '/workout/edit', 
+    name: 'workout.edit', 
     component: () => import("@/views/workout/WorkoutForm.vue"),
   },
+  {
+    path: '/workout/view/:id', 
+    name: 'workout.view', 
+    component: () => import("@/views/workout/WorkoutForm.vue"),
+  }
 ]
 
 const router = createRouter ({

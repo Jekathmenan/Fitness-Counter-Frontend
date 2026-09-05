@@ -20,6 +20,10 @@
         workoutId: {
             type: Number,
             required: true
+        },
+        editable: {
+            type: Boolean,
+            default: true
         }
     });
 
@@ -84,7 +88,7 @@
             <h3 class="text-xl font-bold mt-1">
                 {{ tempWorkout?.exercise?.name || "Übung unbekannt" }}
             </h3>
-            <div class="buttons">
+            <div v-if="editable" class="buttons">
                 <button @click="addNewSet" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-xs transition"><Plus class="w-3 h-3" /></button>
                 <button @click="openDeleteModal" class="mx-2 bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg text-xs transition"><Trash2 class="w-3 h-3" /></button>
             </div>
@@ -99,14 +103,14 @@
                         <!--<th scope="col" class="px-3 py-2 font-semibold">Pos.</th>-->
                         <th scope="col" class="px-3 py-2 font-semibold">Gewicht</th>
                         <th scope="col" class="px-3 py-2 font-semibold">Wiederh.</th>
-                        <th scope="col" class="px-3 py-2 font-semibold text-right">
+                        <th v-if="editable"  scope="col" class="px-3 py-2 font-semibold text-right">
                         </th>
                     </tr>
                 </thead>
                 
                 <tbody class="divide-y divide-gray-700/50">
                     <tr v-for="workoutSet in tempWorkout?.workoutSets" class="hover:bg-gray-700/30 transition-all duration-200 group">
-                        <WorkoutSet :set="workoutSet" :exercise-id="tempWorkout?.id" @setChanged="setChanged" />
+                        <WorkoutSet :set="workoutSet" :editable="editable" :exercise-id="tempWorkout?.id" @setChanged="setChanged" />
                     </tr>
                 </tbody>
             </table>

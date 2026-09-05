@@ -18,6 +18,10 @@
         type: String,
         required: false
       },
+      disableInsertBtn: {
+        type: Boolean,
+        default: false
+      },
       insertText: {
         type: String,
         required: false
@@ -65,7 +69,7 @@
       </h1>
 
       <div class="flex flex-col">
-        <button v-if="insertText && (insertPath || insertAction)" @click="handleClick" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
+        <button v-if="!disableInsertBtn && insertText && (insertPath || insertAction)" @click="handleClick" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
           <router-link v-if="insertPath" class="flex" :to="insertPath"><span class="mr-2">{{ insertText }} </span><CirclePlus class="w-5 h-5" /></router-link>
           <span v-if="insertAction" class="flex" ><span class="mr-2">{{ insertText }} </span><CirclePlus class="w-5 h-5" /></span>
         </button>

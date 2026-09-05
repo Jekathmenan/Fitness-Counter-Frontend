@@ -4,9 +4,11 @@
     import apiClient from '@/api/client'; 
     import Header from '@/components/template/reusable/Header.vue';
     import { formatGermanDateTime } from '@/utils/dateFormatter';
+    import { useRouter } from 'vue-router';
 
     const flashStore = useFlashStore();
     const workouts = ref({});
+    const router = useRouter();
     
     const fetchTrainingsData = async () => {
         try {
@@ -29,7 +31,6 @@
     const calculateTimeSofar = (workout) => {
         const start = new Date(workout.startTime);
         const end = new Date(workout.endTime);
-        console.log("start:" + start + " end:" + end)
         const diff = Math.max(0, end - start); 
         const seconds = Math.floor((diff / 1000) % 60);
         const minutes = Math.floor((diff / (1000 * 60)) % 60);
@@ -40,13 +41,19 @@
         return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
     };
     
+    const openDetailView = (workout) => {
+        console.log("openDetail clicked for ", workout);
+        router.push({
+            path: "/workout/view/" + workout.id
+        });
+    };
 
     onMounted(() => { fetchTrainingsData(); });
 </script>
 <template>
     <Header title="Trainingsverlauf"  
         :insertText="ongoingWorkout ? 'Training bearbeiten' : 'Training starten'" 
-        insertPath="/workout/add"
+        insertPath="/workout/edit"
     />
     <div class="mt-5 relative overflow-x-auto shadow-2xl rounded-xl border border-gray-700/50 bg-gray-800/50">
         <table class="w-full text-sm text-left text-gray-300">
@@ -64,7 +71,7 @@
             </thead>
             
             <tbody class="divide-y divide-gray-700/50">
-                <tr v-for="workout in workouts" class="hover:bg-gray-700/30 transition-all duration-200 group">
+                <tr v-for="workout in workouts" @click="openDetailView(workout)" class="cursor-pointer hover:bg-gray-700/30 transition-all duration-200 group">
                     <td class="px-6 py-4 text-gray-500 font-mono text-xs">
                        #{{ workout.id }}
                     </td>

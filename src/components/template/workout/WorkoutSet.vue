@@ -13,6 +13,10 @@
         exerciseId: {
             type: Number,
             required: true
+        },
+        editable: {
+            type: Boolean,
+            default: true
         }
     });
 
@@ -95,7 +99,7 @@
         {{ set.pos }}
     </td> -->
     <td class="px-3 py-2 font-bold text-white hover:text-blue-400 transition-colors">
-        <input v-model="weight" maxlength="4" 
+        <input v-model="weight" maxlength="4" :readonly="!editable"
             :class="
                 errors.weight ? 
                     'border-red-500 text-red-500' : 
@@ -108,7 +112,7 @@
 
     </td>
     <td class="px-3 py-2 font-bold text-white hover:text-blue-400 transition-colors">
-        <input v-model="reps" maxlength="4" 
+        <input v-model="reps" maxlength="4" :readonly="!editable"
             :class="errors.reps ?
                 'border-red-500 text-red-500' :
                 'border-gray-600 focus:border-blue-500 text-white',
@@ -119,7 +123,7 @@
             class="w-15 px-2 text-center rounded-lg border border-gray-600" />
     </td>
     
-    <td class="px-3 py-2">
+    <td v-if="editable" class="px-3 py-2">
         <div class="flex justify-end space-x-2">
             <button @click="saveChanges" 
                 class="p-2 rounded-lg bg-gray-700/50 text-blue-400 hover:bg-blue-500 hover:text-white transition-all shadow-sm" 
@@ -135,6 +139,7 @@
         </div>
     </td>
     <ConfirmModal
+        v-if="editable"
         :is-open="isDeleteModalOpen"
         title="Satz löschen?"
         message="Möchten Sie diesen Satz wirklich entfernen?"
